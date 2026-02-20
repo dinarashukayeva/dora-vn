@@ -64,6 +64,13 @@ define config.has_voice = True
 
 # define config.main_menu_music = "main-menu-theme.ogg"
 
+# Turn on model based rendering. This enables matrixcolor for brightness
+define config.gl2 = True
+
+## Brightness #################################################################
+# This variable controls the default brightness of the game. The default, 0, is normal brightness.
+# -1 is the darkest, and 1 is the brightest. This can be changed in-game with the "brightness" statement.
+default renpyBrightness = 0.0
 
 ## Transitions #################################################################
 ##

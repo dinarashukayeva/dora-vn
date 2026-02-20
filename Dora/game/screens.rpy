@@ -774,6 +774,12 @@ screen preferences():
                     label _("Auto-Forward Time")
 
                     bar value Preference("auto-forward time")
+                
+                vbox:
+
+                    label _("Brightness")
+
+                    bar value FieldValue(store, "renpyBrightness", min=-1.0, max=1.0)
 
                 vbox:
 
