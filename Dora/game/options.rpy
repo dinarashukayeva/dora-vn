@@ -67,11 +67,6 @@ define config.has_voice = True
 # Turn on model based rendering. This enables matrixcolor for brightness
 define config.gl2 = True
 
-## Brightness #################################################################
-# This variable controls the default brightness of the game. The default, 0, is normal brightness.
-# -1 is the darkest, and 1 is the brightest. This can be changed in-game with the "brightness" statement.
-default persistent.renpyBrightness = 0.0
-
 ## Transitions #################################################################
 ##
 ## These variables set transitions that are used when certain events occur.
@@ -134,6 +129,15 @@ default preferences.text_cps = 0
 ## to 30 being the valid range.
 
 default preferences.afm_time = 15
+
+## The default text font size
+default persistent.text_font_size = 0
+
+## The default brightness
+default persistent.renpyBrightness = 0.0
+
+## The default dyslexic font boolean
+default persistent.dyslexic_font = False
 
 
 ## Save directory ##############################################################
