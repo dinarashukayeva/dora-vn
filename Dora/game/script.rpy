@@ -169,6 +169,30 @@ label blackjack:
 
 
 
+label Roulette:
+    show mc 
+    with mc 
+    mc "I think i'll play some roulette"
+
+    pause 0.5
+    
+
+
+label groceryStore:
+    show mc 
+    with fade
+    mc "Now I can truly start my new life! I’ve got ## dollars to spend on groceries"
+    pause 0.5
+    mc "What I truly want is chocolate, but I only know the words for egg"
+    
+    jump groceryStoreMinigame
+
+label groceryStoreMinigame:
+
+
+
+
+
 
 
 
