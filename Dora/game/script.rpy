@@ -30,9 +30,16 @@ label start:
 
     # These display lines of dialogue.
 
-    mc "You've created a new Ren'Py game."
+    mc "{i}(This is it.){/i}"
 
-    mc "Once you add a story, pictures, and music, you can release it to the world!"
+    None "chugga chugga chugga chugga choo choo!"
+
+    mc "{i}(A new start… a brand new language){/i}"
+
+    intercom "\u042A\u04B2\u060E stop ઔ७ࠁೋ"
+
+    mc "{i}Here’s my stop… I think.{/i}"
+
 
     # This ends the game.
 
