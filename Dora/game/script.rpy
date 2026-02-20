@@ -2,6 +2,8 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
+default money = 0
+$money = 1000
 define mc = Character("MC")
 define intercom = Character("Train Conductor, Intercom")
 image bg train:
@@ -36,7 +38,6 @@ label start:
 
 
     # This ends the game.
-
     jump neighbours1
 
 label neighbours1:
@@ -146,7 +147,7 @@ label neighbours2:
 
     mc "GAMBLING"
 
-
+    jump casino
 
 
 
@@ -157,12 +158,15 @@ label casino:
     mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
     mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
     mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
-    mc "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}"
-    mc "Deal me in."
+    menu:
+        "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}":
+            jump blackjack
+        "{i}Maybe I'll just try the good ol Roulette, no numbers there...{/i}":
+            jump Roulette
     jump blackjack
 
 label blackjack:
-
+    mc "Deal me in."
 
 
 
@@ -171,11 +175,50 @@ label blackjack:
 
 label Roulette:
     show mc 
-    with mc 
-    mc "I think i'll play some roulette"
-
+    with fade
+    mc "Spin it up"
     pause 0.5
-    
+    default value = 0   
+    default bet = 0
+    $value = renpy.random.random()
+    mc "How much should I bet?"
+    menu:
+        "1/10 of my money":
+            $bet = money/10
+        "1/6 of my money":
+            $bet = money/6
+        "1/4 of my money":
+            $bet = money/4
+        "1/3 of my money":
+            $bet = money/3
+        "1/2 of my money":
+            $bet = money/2
+        "ALL IN":
+            $bet = money
+    menu:
+        "Red":
+            if(value < 0.50):
+                "You Won"
+                $money = money + bet
+                pause 2
+                return
+            else:
+                "You Lost"
+                $money = money - bet
+                pause 2.0
+                return
+        "Black":
+            if(value > 0.50):
+                "You Won"
+                $money = money + bet
+                pause 2.0
+                return
+            else:
+                "You Lost"
+                $money = money - bet
+                pause 2.0
+                return
+
 
 
 label groceryStore:
