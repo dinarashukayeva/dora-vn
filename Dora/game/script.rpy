@@ -184,7 +184,7 @@ label Roulette:
             $bet = money
     menu:
         "Red":
-            if(value < 0.50):
+            if(value < 0.4857):
                 "You Won"
                 $money = money + bet
                 pause 2
@@ -195,7 +195,7 @@ label Roulette:
                 pause 2.0
                 return
         "Black":
-            if(value > 0.50):
+            if(value > 0.4857 and value < 0.9714):
                 "You Won"
                 $money = money + bet
                 pause 2.0
@@ -205,6 +205,18 @@ label Roulette:
                 $money = money - bet
                 pause 2.0
                 return
+        "Green":
+            if(value > 0.9714):
+                "You Won"
+                $money = money + bet*17
+                pause 2.0
+                return
+            else:
+                "You Lost"
+                $money = money - bet
+                pause 2.0
+                return
+
 
 
 
