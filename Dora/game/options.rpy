@@ -70,7 +70,7 @@ define config.gl2 = True
 ## Brightness #################################################################
 # This variable controls the default brightness of the game. The default, 0, is normal brightness.
 # -1 is the darkest, and 1 is the brightest. This can be changed in-game with the "brightness" statement.
-default renpyBrightness = 0.0
+default persistent.renpyBrightness = 0.0
 
 ## Transitions #################################################################
 ##

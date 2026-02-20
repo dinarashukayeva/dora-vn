@@ -779,7 +779,7 @@ screen preferences():
 
                     label _("Brightness")
 
-                    bar value FieldValue(store, "renpyBrightness", min=-1.0, max=1.0)
+                    bar value FieldValue(persistent, "renpyBrightness", min=-1.0, max=1.0, style="slider")
 
                 vbox:
 
