@@ -32,6 +32,18 @@ label start:
 
     return
 
+label casino:
+    scene bg casino
+
+    mc "{i}I feel right home... where I'm meant to be.{/i}"
+    mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
+    mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
+    mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+    mc "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}"
+    mc "Deal me in."
+    jump blackjack
+
+label blackjack:
 
 
 
