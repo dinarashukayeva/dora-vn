@@ -104,7 +104,7 @@ label neighbours1:
         jump neighbours2
 
 label neighbours2:
-
+    scene outside
     show Neighbour 
     with fade
 
