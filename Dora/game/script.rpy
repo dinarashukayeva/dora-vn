@@ -34,7 +34,7 @@ label start:
 
     mc "{i}(A new start… a brand new language){/i}"
 
-    intercom "\u042A\u04B2\u060E stop ઔ७ࠁೋ"
+    intercom "\u042A\u04B2\u2762 stop \u2711\u27B3\u2727"
 
     mc "{i}Here’s my stop… I think.{/i}"
 
