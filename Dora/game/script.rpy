@@ -3,7 +3,11 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define e = Character("Eileen")
+define mc = Character("MC")
+define intercom = Character("Train Conductor, Intercom")
+image bg train:
+    "train.webp"
+    matrixcolor BrightnessMatrix(renpyBrightness)
 
 
 # The game starts here.
@@ -14,7 +18,7 @@ label start:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    scene bg room
+    scene bg train
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
@@ -24,9 +28,16 @@ label start:
 
     # These display lines of dialogue.
 
-    e "You've created a new Ren'Py game."
+    mc "{i}(This is it.){/i}"
 
-    e "Once you add a story, pictures, and music, you can release it to the world!"
+    None "chugga chugga chugga chugga choo choo!"
+
+    mc "{i}(A new start… a brand new language){/i}"
+
+    intercom "\u042A\u04B2\u060E stop ઔ७ࠁೋ"
+
+    mc "{i}Here’s my stop… I think.{/i}"
+
 
     # This ends the game.
 
