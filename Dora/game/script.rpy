@@ -148,7 +148,7 @@ label casino:
     menu:
         "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}":
             jump blackjack
-        "{i}Maybe I'll just try the good ol Roulette, no numbers there...{/i}":
+        "{i}Roulette is probably a safer option if I can't read the numbers...{/i}":
             jump Roulette
     jump blackjack
 
