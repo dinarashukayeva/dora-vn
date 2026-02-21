@@ -410,7 +410,7 @@ label neighbour_loan:
     if money < 200:
         scene bg mansion_outside
         with None
-        show n
+        show neighbour
         with fade
         n "unicode here: Hey do you need a loan"
         mc "im running low on money."
@@ -421,7 +421,7 @@ label neighbour_loan:
     elif money > debt and debt > 0:
         scene bg mansion_outside
         with None
-        show n
+        show neighbour
         with fade
         n "unicode here: Hello! do you have my money"
         menu:
