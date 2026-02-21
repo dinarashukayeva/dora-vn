@@ -756,6 +756,19 @@ screen preferences():
                     textbutton _("After Choices") action Preference("after choices", "toggle")
                     textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
 
+                vbox:
+                    style_prefix "radio"
+                    label _("Font size")
+                    textbutton _("Small") action SetField(persistent, "text_font_size", -2)
+                    textbutton _("Medium") action SetField(persistent, "text_font_size", 0)
+                    textbutton _("Large") action SetField(persistent, "text_font_size", 2)
+
+                vbox:
+                    style_prefix "radio"
+                    label _("Dyslexic Font")
+                    textbutton _("On") action SetField(persistent, "dyslexic_font", True)
+                    textbutton _("Off") action SetField(persistent, "dyslexic_font", False)
+
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.
 
@@ -779,7 +792,7 @@ screen preferences():
 
                     label _("Brightness")
 
-                    bar value FieldValue(store, "renpyBrightness", min=-1.0, max=1.0)
+                    bar value FieldValue(persistent, "renpyBrightness", min=-0.5, max=0.5, style="slider")
 
                 vbox:
 
