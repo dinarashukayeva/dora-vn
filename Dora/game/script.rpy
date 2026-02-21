@@ -97,8 +97,6 @@ label neighbours1:
     define Unknown = Character("???")
 
     show bg house
-    show mc
-    with fade
 
     mc "{i}My house… Thank goodness for this convenient map.{/i}"
 
@@ -108,13 +106,11 @@ label neighbours1:
 
     mc "Huh?"
 
-    show n 
+    show neighbour at right
     with fade
 
     Unknown "{noalt}\u2290\u20AB \u2590\u258E\u258C\u25A5.{/noalt}{alt}fiyu... nahvaplex.{/alt}{noalt}\u3048\u3084 \u3191\u332f\uFB6B\uFC15\uFCD5.{/noalt}{alt}eyoor.. shompu..{/alt} next door."
 
-    show mc
-    with fade
 
     mc "Oh they must be my neighbour."
 
@@ -125,37 +121,31 @@ label neighbours1:
             jump N2
 
     label N1:
-        show n
+        show neighbour at right
         with fade
         
         n "Oh {noalt}\u0996\u0AAC \u0ABE\u0C14\u0C0F\u0C36{/noalt}{alt}wallaboo . etzayre.{/noalt} nice {noalt}\u0973\u06A3{/noalt}{alt}wooo.{/noalt} meet you {noalt}\uFECA\u0637{/noalt}{alt}traaaloo{/alt}."
 
-        show mc 
-        with fade
 
         mc "{i}I wish I could say something more but I don’t know how.{/i}"
 
         jump neighbours2
 
     label N2:
-        show n 
+        show neighbour at right
         with fade
 
         n "{noalt}\u0CAC\u0D2F\u0D3F \u04D4 \u0E07\u0E1F \u0EA7\u0F35\u0F78\u0F77\u0D0B{/noalt}{alt}denay tharaku yie cratsaladat{/alt} hahaha {noalt}\u10F4\u112D\u1120 \u117C \u11E1\u1E88\u1EF2\u1F63 \u2076\u2127\u2218\u2281 \u22D1 \u2320\u224F \u2574{/noalt}{alt}...budlakxkeoaryusheiyasooolathimagablonka..{/alt} hello."
 
-        show mc 
-        with fade 
 
         mc "{i}I can’t tell… were they laughing at me? But they said 'hello'...{/i}"
 
         jump neighbours2
 
 label neighbours2:
-
+    hide neighbour
     n "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
-    show mc 
-    with fade 
 
     mc "Uh, yes… bye bye."
 
@@ -352,8 +342,6 @@ label blackjack:
                 jump neighbour_loan
 
 label Roulette:
-    show mc 
-    with fade
     mc "Spin it up"
     pause 0.5
     default value = 0   
