@@ -199,6 +199,8 @@ label casino:
         mc "{i}Back to the grind!{/i}"
     menu:
         "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}":
+            if day == 0:
+                mc "{i}Probably have a better shot once I learn the numbers... {b}maybe I should keep track of what each character means?{/b}{/i}"
             jump blackjack
         "{i}Roulette is probably a safer option if I can't read the numbers...{/i}":
             jump Roulette
@@ -330,14 +332,14 @@ label blackjack:
                 jump lose
     label win:
         if playerscore == 21:
-            dealer "Wow, blackjack! Congratulations!" # someone put some unicode here
+            dealer "\u23CF\u0C20, blackjack! \u0B9E\u235F" # someone put some unicode here
             $ money += bet * 3
         else:
-            dealer "Congratulations, you win!" # someone put some unicode here
+            dealer "\u0B9E\u235F, \u0D17win!" # someone put some unicode here
             $ money += bet * 2
         jump postgamemenu
     label lose:
-        dealer "Sorry, looks like you lose." # someone put some unicode here
+        dealer "\u0933, \u0554\u0462\u0D17 lose." # someone put some unicode here
         jump postgamemenu
 
     label postgamemenu:
@@ -349,6 +351,7 @@ label blackjack:
                 jump betinput
             "Stop playing":
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
+                mc "{i}Hopefully I learned some numbers from that session.{/i}"
                 jump neighbour_loan
 
 label Roulette:
@@ -451,13 +454,15 @@ label neighbour_loan:
         jump home
 
 label groceryStore:
-    scene bg grocery
+    scene bg house
     with None
     show mc 
     with fade
     mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
     mc "{i}There's a grocery store that speaks English, but those prices are absurd... {/i}"
     mc "{i}Maybe the local store down the street has some better deals, but I'll have to learn the language...{/i}"
+    scene bg grocery
+    with fade
     pause 0.5
     $ keywords = {"\u273F": "milk", "\u22B0": "apples", "\u263E": "cheese", "\u2630": "bread", "\u22CB": "potatoes", "\u21E7": "beef"}
     $ todayswords = renpy.random.sample(list(keywords.keys()), 2)
@@ -481,6 +486,9 @@ label groceryStore:
     $ aislesleft = 2
     $ collecteditems = []
 
+    if day == 0:
+        mc "{i}As I expected, I won't be able to read these aisles. I know that each item in the store is {b}1 character long{/b}, and each aisle appears to have 4 items each."
+        mc "{i}If I try enough times, eventually I should be able to learn what each character means.{/i}"
     jump groceryStoreMinigameAisles
 
 label groceryStoreMinigameAisles:
@@ -526,7 +534,7 @@ label groceryStoreMinigameCheck:
                 founditemsstring += i + ", "
                 collecteditems.append(i)
             founditemsstring = founditemsstring[:-2]
-        mc "Found: [founditemsstring]"
+        mc "Found: [founditemsstring]!"
     $ aislesleft -= 1
     if todayswords == [] or aislesleft == 0:
         jump groceryStorePost
@@ -555,7 +563,7 @@ label groceryStorePost:
         jump new_day
 
     label new_day_neighbour:
-        mc "{i} It's my neighbour from before."
+        mc "{i} It's my neighbour from before. {/i}"
         n "add unicode later (less than before?): Hello! It's good to see you again! Are you going to the grocery store?"
         mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
         jump groceryStore
