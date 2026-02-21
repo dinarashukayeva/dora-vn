@@ -2,8 +2,9 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
+$unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
 default money = 0
-define mc = Character("MC")
+define mc = Character("You")
 define c = Character("Cashier")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
@@ -450,15 +451,15 @@ label neighbour_loan:
         jump home
 
 label groceryStore:
-    scene bg house
-    with None
-    show mc 
-    with fade
-    mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
-    mc "{i}There's a grocery store that speaks English, but those prices are absurd... {/i}"
-    mc "{i}Maybe the local store down the street has some better deals, but I'll have to learn the language...{/i}"
     scene bg grocery
     with fade
+    if day == 0:
+        mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
+        mc "{i}There's a grocery store that speaks English, but those prices are absurd... {/i}"
+        mc "{i}Maybe the local store down the street has some better deals, but I'll have to learn the language...{/i}"
+    else:
+        mc "{i}I'm back at the grocery store!{/i}"
+
     pause 0.5
     $ keywords = {"\u273F": "milk", "\u22B0": "apples", "\u263E": "cheese", "\u2630": "bread", "\u22CB": "potatoes", "\u21E7": "beef"}
     $ todayswords = renpy.random.sample(list(keywords.keys()), 2)
@@ -580,22 +581,26 @@ label groceryStorePost:
     label home:
         scene bg home
         with fade
-        mc "{i}What should I do?{/i}"
-        menu:
-            "Attempt the language exam":
-                jump exam
-            "Go GAMBLING":
-                mc "wait you haven't updated the casino code yet noooo-"
-                $time += 1
-                jump casino
-            "Go to the grocery store":
-                mc "wait you haven't updated the grocery store code yet noooo-"
-                $time += 1
-                jump new_day_neighbour
-            "Study the language":
-                $time += 1
-                mc "i haven't done anything here yet"
-                jump practice
+        if time >= 3:
+            mc "This has been a good day!"
+            jump new_day
+        else:
+            mc "{i}What should I do?{/i}"
+            menu:
+                "Attempt the language exam":
+                    jump exam
+                "Go GAMBLING":
+                    mc "Let's go GAMBLING!"
+                    $time += 1
+                    jump casino
+                "Go to the grocery store":
+                    mc "I need some more groceries..."
+                    $time += 1
+                    jump new_day_neighbour
+                "Study the language":
+                    $time += 1
+                    mc "no code, i haven't done anything here yet"
+                    jump practice
 
     label exam:
         mc "The language exam costs 500$ to atttempt, but once I pass it, i'll be able to find a job..."
@@ -745,6 +750,7 @@ label groceryStorePost:
         mc "{i}I got [correct]/5 this time."
         if correct == 5:
             mc "I've passed the test! I am finding my place in this new city."
+            return
         else:
             mc "I've got some more practice to do... and some more money to make"
         jump home
@@ -752,4 +758,4 @@ label groceryStorePost:
     label practice: 
         mc "{i}It's a good thing I bought this language book before I gave up my old life!{/i}"
         mc "{i}Time to Lock In{/i}"
-        mc "oops no code"
+        
