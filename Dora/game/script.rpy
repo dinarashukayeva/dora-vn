@@ -57,7 +57,7 @@ init python:
     config.say_menu_text_filter = dyslexic_text_filter
 
     def apply_brightness(st, at):
-        return Transform("train.webp", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
+        return Transform("train_bg.png", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
     
 
 image bg train = DynamicDisplayable(apply_brightness)
