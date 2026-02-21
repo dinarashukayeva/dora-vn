@@ -761,7 +761,7 @@ label groceryStorePost:
         "It will cost ($100)"
         menu:
             "Yes?":
-                money -= 100
+                $money -= 100
                 jump start_practice
             "No?":
                 jump home
