@@ -1,11 +1,16 @@
-﻿# The script of the game goes in this file.
+# The script of the game goes in this file.
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 default money = 0
 define mc = Character("MC")
+define c = Character("Cashier")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
+define f = Character("flier")
+image bg train:
+    "train.webp"
+    matrixcolor BrightnessMatrix(renpyBrightness)
 
 init python:
     if persistent.text_font_size is None:
@@ -57,6 +62,7 @@ label neighbours1:
     define Neighbour = Character("Neighbour")
     define Unknown = Character("???")
 
+    show bg house
     show mc
     with fade
 
@@ -128,7 +134,7 @@ label neighbours2:
 
     mc "{i}I have to learn the language soon. I don’t know how else I’ll manage living here. How would I make money?{/i}"
 
-    "Stomach Growl"
+    "Stomach Growls"
 
     mc "{i}But first I need some food. The last time I ate was before the train ride.{/i}"
 
@@ -304,11 +310,6 @@ label blackjack:
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
                 jump groceryStore
 
-
-
-
-
-
 label Roulette:
     show mc 
     with fade
@@ -376,47 +377,74 @@ label Roulette:
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
         jump groceryStore
 
-
-
-
 label groceryStore:
+    scene bg grocery
+    with None
     show mc 
     with fade
-    mc "Now I can truly start my new life! I’ve got ## dollars to spend on groceries"
+    mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
     pause 0.5
-    mc "What I truly want is chocolate, but I only know the words for egg"
+    mc "{i}What I truly want is chocolate, but I only know the words for egg...{/i}"
+    mc "{i}A flier with pictures! I've gotta memorize the words on this to be able to buy what I need.{/i}"
+    f "milk: \u273F\u22B0, bread: \u263E\u2630, chocolate: \u22CB\u21E7"
     
-    jump groceryStoreMinigame
+    jump groceryStoreMinigame1
 
-label groceryStoreMinigame:
+label groceryStoreMinigame1:
+    $items = []
+    mc "{i}The first thing I'm looking for is milk. Which aisle would that be in?{/i}"
+    menu:
+        "\u2761 \u2752, \u273F \u22B0, \uFE41 \u27A2":
+            mc "{i}Correct! Found what I needed."
+            $items.append("milk")
+            jump groceryStoreMinigame2
+        "\u2727 \u2711, \u2710 \u2659, \u264B \u27AD":
+            mc "{i}Aww, no milk here...{/i}"
+            jump groceryStoreMinigame2
 
+label groceryStoreMinigame2:
+    mc "{i}Now I need bread.{/i}"
+    menu:
+        "\u3030\u3057, \u273F\u2736, \u2711\u270D":
+            mc "{i}Aww, no bread here...{/i}"
+            jump groceryStoreMinigame3
+        "\u3007\u300F, \u263E\u2630, \u3014\u3037":
+            mc "{i}Correct! Found what I needed.{/i}"
+            $items.append("bread")
+            jump groceryStoreMinigame3
 
+label groceryStoreMinigame3:
+    mc "{i}Last but not least, chocolate!{/i}"
+    menu:
+        "\u2727 \u2711, \u264B \u27AD, \u273F \u22B0":
+            mc "{i}Aww, no chocolate here...{/i}"
+            jump groceryStorePost
+        "\u22CB\u21E7, \u273F\u2736, \u2711\u270D":
+            mc "{i}Correct! Found what I needed.{/i}"
+            $items.append("chocolate")
+            jump groceryStorePost
 
+label groceryStorePost:
+    if len(items) < 3:
+        mc "{i}I didn't find everything I needed... guess I'll pick up some eggs as well.{/i}"
+        $items.append("eggs")
+    mc "{i}Now I only need to pay for everything I got!{/i}"
+    scene bg cashier
+    c "add unicode later: Hello, would you like to pay?"
+    mc "Umm. Yes!"
+    $item_str = ""
+    python:
+        for i in items:
+            item_str = item_str + ", " + i
+    mc "{i} I ended up with [item_str].{/i}"
+    $cost = len(items) * 20
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #have the cost be the only thing not blurred i think. or rely on your blackjack knowledge?
+    c "add unicode later: That will be [cost]$."
+    if money >= cost:
+        mc "Thank you!"
+        $money -= cost
+    else:
+        mc "{it}I don't have enough...{\it}"
+        mc"{it}I'll put this stuff back.{/it}"
+    jump 
