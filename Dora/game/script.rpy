@@ -6,10 +6,22 @@ default money = 0
 define mc = Character("MC")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
-image bg train:
-    "train.webp"
-    matrixcolor BrightnessMatrix(renpyBrightness)
 
+init python:
+    if persistent.text_font_size is None:
+        persistent.text_font_size = 0.0
+
+    if persistent.dyslexic_font is None:
+        persistent.dyslexic_font = False
+
+    if persistent.renpyBrightness is None:
+        persistent.renpyBrightness = 0.0
+
+    def apply_brightness(st, at):
+        return Transform("train.webp", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
+    
+
+image bg train = DynamicDisplayable(apply_brightness)
 
 # The game starts here.
 
