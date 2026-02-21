@@ -6,6 +6,7 @@ default money = 0
 $money = 1000
 define mc = Character("MC")
 define intercom = Character("Train Conductor, Intercom")
+define dealer = Character("Dealer")
 
 init python:
     if persistent.text_font_size is None:
@@ -38,13 +39,13 @@ label start:
     # directory.
     # These display lines of dialogue.
 
-    mc "{i}(This is it.){/i}"
+    mc "{i}This is it.{/i}"
 
     None "chugga chugga chugga chugga choo choo!"
 
-    mc "{i}(A new start… a brand new language){/i}"
+    mc "{i}A new start… a brand new language.{/i}"
 
-    intercom "\u042A\u04B2\u2762 stop \u2711\u27B3\u2727"
+    intercom "{noalt}\u0433\u04D0\u0484{/noalt}{alt}naxaldent...{/alt} stop {noalt}\u06D0\u06E6\u0996\u09EB\u0ACB\u0EBC{/noalt}{alt}...djalmbiandia{/alt}"
 
     mc "{i}Here’s my stop… I think.{/i}"
 
@@ -55,28 +56,23 @@ label start:
 label neighbours1:
 
     define Neighbour = Character("Neighbour")
+    define Unknown = Character("???")
 
     show mc
     with fade
 
-    mc "My house… Thank goodness for this convenient map."
+    mc "{i}My house… Thank goodness for this convenient map.{/i}"
 
-    pause 1.5
+    mc "{i}I don’t have a lot to unpack.{/i}"
 
-    mc "I don’t have a lot to unpack."
-
-    pause 1.0
-
-    Neighbour "Hey ๛༜Ⴉ ኆᏜᕩᗄᗡᬛ!"
+    Unknown "Hey {noalt}\u0ED7\u0F5D\u10FB \u1135\u11DF\u1FB7\u216E\u2124\u2238\u2464\u2548{/noalt}{alt}maoew knighlmaeirta{/alt}!"
 
     mc "Huh?"
-
-    pause 0.5
 
     show Neighbour 
     with fade
 
-    Neighbour "𮸽🤂 <NAME> and this is <name>. I live next door."
+    Unknown "{noalt}\u2290\u20AB \u2590\u258E\u258C\u25A5.{/noalt}{alt}fiyu... nahvaplex.{/alt}{noalt}\u3048\u3084 \u3191\u332f\uFB6B\uFC15\uFCD5.{/noalt}{alt}eyoor.. shompu..{/alt} next door."
 
     show mc
     with fade
@@ -93,12 +89,12 @@ label neighbours1:
         show Neighbour
         with fade
         
-        Neighbour "Oh well it’s nice to meet you too."
+        Neighbour "Oh {noalt}\u0996\u0AAC \u0ABE\u0C14\u0C0F\u0C36{/noalt}{alt}wallaboo . etzayre.{/noalt} nice {noalt}\u0973\u06A3{/noalt}{alt}wooo.{/noalt} meet you {noalt}\uFECA\u0637{/noalt}{alt}traaaloo{/alt}."
 
         show mc 
         with fade
 
-        mc "I wish I could say something more but I don’t know how."
+        mc "{i}I wish I could say something more but I don’t know how.{/i}"
 
         jump neighbours2
 
@@ -106,56 +102,48 @@ label neighbours1:
         show Neighbour 
         with fade
 
-        Neighbour "Neighbour: Don’t think I caught all that hahaha but I assume you said something along the lines of “hello”."
+        Neighbour "{noalt}\u0CAC\u0D2F\u0D3F \u04D4 \u0E07\u0E1F \u0EA7\u0F35\u0F78\u0F77\u0D0B{/noalt}{alt}denay tharaku yie cratsaladat{/alt} hahaha {noalt}\u10F4\u112D\u1120 \u117C \u11E1\u1E88\u1EF2\u1F63 \u2076\u2127\u2218\u2281 \u22D1 \u2320\u224F \u2574{/noalt}{alt}...budlakxkeoaryusheiyasooolathimagablonka..{/alt} hello."
 
         show mc 
         with fade 
 
-        mc "I can’t tell… were they laughing at me? But they said hello"
+        mc "{i}I can’t tell… were they laughing at me? But they said 'hello'...{/i}"
 
         jump neighbours2
 
 label neighbours2:
-
+    scene outside
     show Neighbour 
     with fade
 
-    Neighbour "Well I better be off. I hope you can settle in nicely. Bye bye now~"
+    Neighbour "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
     show mc 
     with fade 
 
     mc "Uh, yes… bye bye."
 
-    pause 0.5
-
-    mc "I barely understood anything in that conversation…"
+    mc "{i}I barely understood anything in that conversation…{/i}"
 
     "Go into house"
 
-    mc "I have to learn the language soon. I don’t know how else I’ll manage living here. How would I make money?"
+    mc "{i}I have to learn the language soon. I don’t know how else I’ll manage living here. How would I make money?{/i}"
 
-    "Stomache Growls"
+    "Stomach Growl"
 
-    mc "But first I need some food. The last time I ate was before the train ride."
-    
-    pause 0.5
+    mc "{i}But first I need some food. The last time I ate was before the train ride.{/i}"
 
-    mc "I wonder what I could eat…"
+    mc "{i}I wonder what I could eat…{/i}"
 
-    "Look inside the empty fridge."
+    mc "{i}I can look in the fridge-{/i}"
 
-    mc "Right… I have no groceries yet. I should buy something-"
+    mc "{i}Right… I have no groceries yet. I should buy something-{/i}"
 
-    pause 0.5
+    mc "{i}But this is all my money before getting a job… How can I make more money while also getting something to eat?{/i}"
 
-    mc "But this is all my money before getting a job… How can I make more money while also getting something to eat?"
-
-    mc "Oh! I know."
+    mc "{i}Oh! I know.{/i}"
 
     mc "My specialty from back home too"
-
-    pause 2.0
 
     mc "GAMBLING"
 
@@ -179,6 +167,143 @@ label casino:
 
 label blackjack:
     mc "Deal me in."
+    $ bet = 0
+    label betinput:
+        $ bet = int(renpy.input (_("Input your bet. You have $[money] left."), allow="0123456789."))
+        if bet > money:
+            mc "{i}I don't have enough money for that bet...{/i}"
+            jump betinput
+        else:
+            $ money -= bet
+    $ dealerscore = 0
+    $ playerscore = 0
+    $ playeraces = 0
+    $ dealeraces = 0
+
+    # Deal cards
+    $ playerdraw = renpy.random.randint(1,13) # 1st player draw
+    # [insert card sprite into scene here]
+    if playerdraw > 10:
+        $ playerdraw = 10
+    elif playerdraw == 1:
+        $ playeraces += 1
+    $ playerscore += playerdraw
+    $ playerdraw = renpy.random.randint(1,13) # Second player draw
+    # [insert card sprite into scene here]
+    if playerdraw > 10:
+        $ playerdraw = 10
+    elif playerdraw == 1:
+        $ playeraces += 1
+        $ playerscore += playerdraw
+
+    $ dealerdraw = renpy.random.randint(1,13)
+    # [insert card sprite into scene here]
+    if dealerdraw > 10:
+        $ dealerdraw = 10
+    elif dealerdraw == 1:
+        $ dealeraces += 1
+    $ dealerscore += dealerdraw
+    # [insert facedown dealer card sprite]
+    label playerChoice:
+        # Have buttons appear
+        menu:
+            "Hit":
+                $ playerdraw = renpy.random.randint(1,13)
+                # [insert card sprite into scene here]
+                if playerdraw > 10:
+                    $ playerdraw = 10
+                elif playerdraw == 1:
+                    $ playeraces += 1
+                $ playerscore += playerdraw
+                jump checkPlayer
+            "Stand":
+                jump stand
+            # Space for split option later if desired
+            "Double Down":
+                if money < bet:
+                    mc "{i}Looks like I don't have enough money to double down here...{/i}"
+                    jump playerChoice
+                $ money -= bet
+                $ bet += bet
+                $ playerdraw = renpy.random.randint(1,13)
+                # [insert card sprite into scene here]
+                if playerdraw > 10:
+                    $ playerdraw = 10
+                elif playerdraw == 1:
+                    $ playeraces += 1
+                $ playerscore += playerdraw
+                if playerscore > 21:
+                    if playeraces > 0:
+                        $ playerscore -= 10
+                        $ playeraces -= 1
+                        jump stand
+                    else:
+                        jump lose
+                elif playerscore == 21:
+                    jump win
+                else:
+                    jump stand
+    label checkPlayer:
+        if playerscore > 21:
+            if playeraces > 0:
+                $ playerscore -= 10
+                $ playeraces -= 1
+                jump playerChoice
+            else:
+                jump lose
+        elif playerscore == 21:
+            jump win
+        else:
+            jump playerChoice
+    label stand:
+        # [remove facedown card sprite]
+        while dealerscore < 21:
+            $ dealerdraw = renpy.random.randint(1,13)
+            # [insert card sprite into scene here]
+            if dealerdraw > 10:
+                $ dealerdraw = 10
+            elif dealerdraw == 1:
+                $ dealeraces += 1
+            $ dealerscore += dealerdraw
+        jump checkDealer
+    label checkDealer:
+        if dealerscore > 21:
+            if dealeraces > 0:
+                $ dealerscore -= 10
+                $ dealeraces -= 1
+                jump compare
+            else:
+                jump win
+        elif dealerscore == 21:
+            jump lose
+        else:
+            jump compare
+        label compare:
+            if playerscore > dealerscore:
+                jump win
+            else:
+                jump lose
+    label win:
+        if playerscore == 21:
+            dealer "Wow, blackjack! Congratulations!" # someone put some unicode here
+            $ money += bet * 3
+        else:
+            dealer "Congratulations, you win!" # someone put some unicode here
+            $ money += bet * 2
+        jump postgamemenu
+    label lose:
+        dealer "Sorry, looks like you lose." # someone put some unicode here
+        jump postgamemenu
+    label postgamemenu:
+        menu:
+            "Continue playing":
+                if money == 0:
+                    mc "{i}I'm a bit too poor to keep gambling...{/i}"
+                    jump postgamemenu
+                jump betinput
+            "Stop playing":
+                mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
+                jump groceryStore
 
 
 
@@ -209,7 +334,7 @@ label Roulette:
             $bet = money
     menu:
         "Red":
-            if(value < 0.50):
+            if(value < 0.4857):
                 "You Won"
                 $money = money + bet
                 pause 2
@@ -220,7 +345,7 @@ label Roulette:
                 pause 2.0
                 return
         "Black":
-            if(value > 0.50):
+            if(value > 0.4857 and value < 0.9714):
                 "You Won"
                 $money = money + bet
                 pause 2.0
@@ -230,6 +355,18 @@ label Roulette:
                 $money = money - bet
                 pause 2.0
                 return
+        "Green":
+            if(value > 0.9714):
+                "You Won"
+                $money = money + bet*17
+                pause 2.0
+                return
+            else:
+                "You Lost"
+                $money = money - bet
+                pause 2.0
+                return
+
 
 
 
