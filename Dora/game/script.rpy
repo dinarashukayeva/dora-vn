@@ -33,6 +33,7 @@ image bg train = DynamicDisplayable(apply_brightness)
 
 label start:
     $ money = 1000
+    $ debt = 0
     $ day = 0
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
@@ -159,10 +160,13 @@ label neighbours2:
 label casino:
     scene bg casino
 
-    mc "{i}I feel right home... where I'm meant to be.{/i}"
-    mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
-    mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
-    mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+    if day == 0:
+        mc "{i}I feel right home... where I'm meant to be.{/i}"
+        mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
+        mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
+        mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+    else:
+        mc "{i}Back to the grind!{/i}"
     menu:
         "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}":
             jump blackjack
@@ -308,7 +312,7 @@ label blackjack:
                 jump betinput
             "Stop playing":
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
-                jump groceryStore
+                jump neighbour_loan
 
 label Roulette:
     show mc 
@@ -375,7 +379,36 @@ label Roulette:
                 jump Roulette
             "Stop playing":
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
-        jump groceryStore
+        jump neighbour_loan
+
+label neighbour_loan:
+    if money == 0:
+        scene bg mansion_outside
+        with None
+        show n
+        with fade
+        n "unicode here: Hey do you need a loan"
+        mc "i have 0 money."
+        n "i'll give you 200$ (joshua this has to be whatever the price of the exp)"
+        mc "{i}My neighbour gave me 200 dollars! I'll have to pay them back eventually.{/i}"
+        $money += 200
+        $debt += 200
+    elif money > debt and debt > 0:
+        scene bg mansion_outside
+        with None
+        show n
+        with fade
+        n "unicode here: Hello! do you have my money"
+        menu:
+            "Pay them back":
+                mc "Thank you! idk somone fix this dialogue pls"
+                $ money -= debt
+                jump groceryStore
+            "Pay them back but be mean about it":
+                mc "fine >:("
+                jump groceryStore
+    
+    jump groceryStore
 
 label groceryStore:
     scene bg grocery
@@ -455,12 +488,19 @@ label groceryStorePost:
         scene bg home
         with fade
         mc "{i}Finally home! I will need to pass the language exam soon. I should practice... Tomorrow.{/i}"
-        None "It's a new day!"
         jump new_day_neighbour
 
     label new_day_neighbour:
-        mc "{i} It's my neighbour from the first day!"
-        n "add unicode later (less than before): Hello! It's good to see you again!"
+        $ day += 1
+        if day == 1:
+            mc "It's my 2nd day here!"
+        elif day == 2:
+            mc "It's my 3rd day here!"
+        else:
+            mc "It's my [day]th day here!"
+
+        mc "{i} It's my neighbour from before."
+        n "add unicode later (less than before?): Hello! It's good to see you again!"
         mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
 
         mc "{i}What should I do?{/i}"
@@ -480,4 +520,4 @@ label groceryStorePost:
                 mc "i haven't done anything here yet"
 
     label exam:
-        mc "you haven't coded the exaam yet lol"
+        mc "you haven't coded the exam yet lol"
