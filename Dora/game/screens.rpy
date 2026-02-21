@@ -106,8 +106,15 @@ screen say(who, what):
                 id "namebox"
                 style "namebox"
                 text who id "who"
+        
+        ## The text to be displayed. The id "what" is used by Ren'Py to manage text
+        text what:
+            id "what" 
+            size gui.text_size + persistent.text_font_size
 
-        text what id "what" size gui.text_size + persistent.text_font_size
+            ## if dyslexic_font variable is True, set font of dialogues to OpenDyslexic
+            if persistent.dyslexic_font:
+                font "fonts/open-dyslexic.ttf"
 
 
     ## If there's a side image, display it above the text. Do not display on the
