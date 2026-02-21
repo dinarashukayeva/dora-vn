@@ -8,6 +8,7 @@ define c = Character("Cashier")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
 define f = Character("flier")
+define n = Character("Neighbour")
 image bg train:
     "train.webp"
     matrixcolor BrightnessMatrix(renpyBrightness)
@@ -32,6 +33,7 @@ image bg train = DynamicDisplayable(apply_brightness)
 
 label start:
     $ money = 1000
+    $ day = 0
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
@@ -58,8 +60,6 @@ label start:
     jump neighbours1
 
 label neighbours1:
-
-    define Neighbour = Character("Neighbour")
     define Unknown = Character("???")
 
     show bg house
@@ -74,7 +74,7 @@ label neighbours1:
 
     mc "Huh?"
 
-    show Neighbour 
+    show n 
     with fade
 
     Unknown "{noalt}\u2290\u20AB \u2590\u258E\u258C\u25A5.{/noalt}{alt}fiyu... nahvaplex.{/alt}{noalt}\u3048\u3084 \u3191\u332f\uFB6B\uFC15\uFCD5.{/noalt}{alt}eyoor.. shompu..{/alt} next door."
@@ -91,10 +91,10 @@ label neighbours1:
             jump N2
 
     label N1:
-        show Neighbour
+        show n
         with fade
         
-        Neighbour "Oh {noalt}\u0996\u0AAC \u0ABE\u0C14\u0C0F\u0C36{/noalt}{alt}wallaboo . etzayre.{/noalt} nice {noalt}\u0973\u06A3{/noalt}{alt}wooo.{/noalt} meet you {noalt}\uFECA\u0637{/noalt}{alt}traaaloo{/alt}."
+        n "Oh {noalt}\u0996\u0AAC \u0ABE\u0C14\u0C0F\u0C36{/noalt}{alt}wallaboo . etzayre.{/noalt} nice {noalt}\u0973\u06A3{/noalt}{alt}wooo.{/noalt} meet you {noalt}\uFECA\u0637{/noalt}{alt}traaaloo{/alt}."
 
         show mc 
         with fade
@@ -104,10 +104,10 @@ label neighbours1:
         jump neighbours2
 
     label N2:
-        show Neighbour 
+        show n 
         with fade
 
-        Neighbour "{noalt}\u0CAC\u0D2F\u0D3F \u04D4 \u0E07\u0E1F \u0EA7\u0F35\u0F78\u0F77\u0D0B{/noalt}{alt}denay tharaku yie cratsaladat{/alt} hahaha {noalt}\u10F4\u112D\u1120 \u117C \u11E1\u1E88\u1EF2\u1F63 \u2076\u2127\u2218\u2281 \u22D1 \u2320\u224F \u2574{/noalt}{alt}...budlakxkeoaryusheiyasooolathimagablonka..{/alt} hello."
+        n "{noalt}\u0CAC\u0D2F\u0D3F \u04D4 \u0E07\u0E1F \u0EA7\u0F35\u0F78\u0F77\u0D0B{/noalt}{alt}denay tharaku yie cratsaladat{/alt} hahaha {noalt}\u10F4\u112D\u1120 \u117C \u11E1\u1E88\u1EF2\u1F63 \u2076\u2127\u2218\u2281 \u22D1 \u2320\u224F \u2574{/noalt}{alt}...budlakxkeoaryusheiyasooolathimagablonka..{/alt} hello."
 
         show mc 
         with fade 
@@ -118,10 +118,10 @@ label neighbours1:
 
 label neighbours2:
     scene outside
-    show Neighbour 
+    show n 
     with fade
 
-    Neighbour "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
+    n "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
     show mc 
     with fade 
@@ -430,6 +430,8 @@ label groceryStorePost:
         $items.append("eggs")
     mc "{i}Now I only need to pay for everything I got!{/i}"
     scene bg cashier
+    show c
+    with fade
     c "add unicode later: Hello, would you like to pay?"
     mc "Umm. Yes!"
     $item_str = ""
@@ -445,6 +447,16 @@ label groceryStorePost:
         mc "Thank you!"
         $money -= cost
     else:
-        mc "{it}I don't have enough...{\it}"
-        mc"{it}I'll put this stuff back.{/it}"
-    jump 
+        mc "{i}I don't have enough...{/i}"
+        mc "{i}I'll put this stuff back.{/i}"
+    jump home
+
+    label home:
+        mc "{i}Finally home! I will need to pass the language exam soon. I should practice... Tomorrow.{/i}"
+        None "It's a new day!"
+        jump new_day_neighbour
+
+    label day2_neighbour:
+        mc "{i} It's my neighbour from the first day!"
+        n "add unicode later (less than before): Hello! It's good to see you again!"
+        mc "Hello! ..."
