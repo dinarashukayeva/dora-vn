@@ -237,7 +237,7 @@ label blackjack:
         $ playerdraw = 10
     elif playerdraw == 1:
         $ playeraces += 1
-        $ playerscore += playerdraw
+    $ playerscore += playerdraw
 
     $ dealerdraw = renpy.random.randint(1,13)
     $ dealercards += flippedunicodenumbers[dealerdraw]
@@ -304,6 +304,7 @@ label blackjack:
         while dealerscore < 17:
             $ dealerdraw = renpy.random.randint(1,13)
             $ dealercards += flippedunicodenumbers[dealerdraw]
+            "Player Cards: [playercards]\nDealer Cards: [dealercards]"
             if dealerdraw > 10:
                 $ dealerdraw = 10
             elif dealerdraw == 1:
