@@ -94,7 +94,7 @@ label start:
 label neighbours1:
     define Unknown = Character("???")
 
-    show bg house
+    show house
 
     mc "{i}My house… Thank goodness for this convenient map.{/i}"
 
