@@ -9,7 +9,7 @@ define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
 define n = Character("Neighbour")
 image bg train:
-    "train.webp"
+    "train_bg.png"
     matrixcolor BrightnessMatrix(renpyBrightness)
 
 init python:
@@ -57,7 +57,7 @@ init python:
     config.say_menu_text_filter = dyslexic_text_filter
 
     def apply_brightness(st, at):
-        return Transform("train.webp", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
+        return Transform("train_bg.png", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
     
 
 image bg train = DynamicDisplayable(apply_brightness)
@@ -97,8 +97,6 @@ label neighbours1:
     define Unknown = Character("???")
 
     show bg house
-    show mc
-    with fade
 
     mc "{i}My house… Thank goodness for this convenient map.{/i}"
 
@@ -108,13 +106,11 @@ label neighbours1:
 
     mc "Huh?"
 
-    show n 
+    show neighbour at right
     with fade
 
     Unknown "{noalt}\u2290\u20AB \u2590\u258E\u258C\u25A5.{/noalt}{alt}fiyu... nahvaplex.{/alt}{noalt}\u3048\u3084 \u3191\u332f\uFB6B\uFC15\uFCD5.{/noalt}{alt}eyoor.. shompu..{/alt} next door."
 
-    show mc
-    with fade
 
     mc "Oh they must be my neighbour."
 
@@ -125,37 +121,31 @@ label neighbours1:
             jump N2
 
     label N1:
-        show n
+        show neighbour at right
         with fade
         
         n "Oh {noalt}\u0996\u0AAC \u0ABE\u0C14\u0C0F\u0C36{/noalt}{alt}wallaboo . etzayre.{/noalt} nice {noalt}\u0973\u06A3{/noalt}{alt}wooo.{/noalt} meet you {noalt}\uFECA\u0637{/noalt}{alt}traaaloo{/alt}."
 
-        show mc 
-        with fade
 
         mc "{i}I wish I could say something more but I don’t know how.{/i}"
 
         jump neighbours2
 
     label N2:
-        show n 
+        show neighbour at right
         with fade
 
         n "{noalt}\u0CAC\u0D2F\u0D3F \u04D4 \u0E07\u0E1F \u0EA7\u0F35\u0F78\u0F77\u0D0B{/noalt}{alt}denay tharaku yie cratsaladat{/alt} hahaha {noalt}\u10F4\u112D\u1120 \u117C \u11E1\u1E88\u1EF2\u1F63 \u2076\u2127\u2218\u2281 \u22D1 \u2320\u224F \u2574{/noalt}{alt}...budlakxkeoaryusheiyasooolathimagablonka..{/alt} hello."
 
-        show mc 
-        with fade 
 
         mc "{i}I can’t tell… were they laughing at me? But they said 'hello'...{/i}"
 
         jump neighbours2
 
 label neighbours2:
-
+    hide neighbour
     n "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
-    show mc 
-    with fade 
 
     mc "Uh, yes… bye bye."
 
@@ -194,7 +184,7 @@ label casino:
         mc "{i}I feel right home... where I'm meant to be.{/i}"
         mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
         mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
-        mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+        mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}" 
     else:
         mc "{i}Back to the grind!{/i}"
     menu:
@@ -355,8 +345,6 @@ label blackjack:
                 jump neighbour_loan
 
 label Roulette:
-    show mc 
-    with fade
     mc "Spin it up"
     pause 0.5
     default value = 0   
@@ -425,7 +413,7 @@ label neighbour_loan:
     if money < 200:
         scene bg mansion_outside
         with None
-        show n
+        show neighbour
         with fade
         n "unicode here: Hey do you need a loan"
         mc "im running low on money."
@@ -436,17 +424,23 @@ label neighbour_loan:
     elif money > debt and debt > 0:
         scene bg mansion_outside
         with None
-        show n
+        show neighbour
         with fade
         n "unicode here: Hello! do you have my money"
         menu:
             "Pay them back":
                 mc "Thank you! idk somone fix this dialogue pls"
                 $ money -= debt
-                jump groceryStore
+                if day == 0:
+                    jump groceryStore
+                else: 
+                    jump home
             "Pay them back but be mean about it":
                 mc "fine >:("
-                jump groceryStore
+                if day == 0:
+                    jump groceryStore
+                else: 
+                    jump home
     
     if day == 0:
         jump groceryStore
@@ -582,6 +576,8 @@ label groceryStorePost:
         jump home
 
     label home:
+        scene bg home
+        with fade
         mc "{i}What should I do?{/i}"
         menu:
             "Attempt the language exam":
@@ -600,7 +596,158 @@ label groceryStorePost:
                 jump practice
 
     label exam:
-        mc "you haven't coded the exam yet lol"
+        mc "The language exam costs 500$ to atttempt, but once I pass it, i'll be able to find a job..."
+        mc "Am I really ready?"
+        menu:
+            "Yes!":
+                $time += 1
+                $correct = 0
+                #add all the dictionaries needed here
+                $unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
+                $total_dict = keywords | unicodenumbers
+                jump question_t
+            "I think I need more time...":
+                jump home
 
+    label question_t:
+        python:
+            correct_answer = []
+            question_statement = []
+            all_answers = []
+
+            for i in range(5):
+                qint = renpy.random.randint(0,1)
+                if qint == 0:
+                    word_list = list(total_dict.keys())
+                    word = renpy.random.choice(word_list)
+                    question_statement.append("How to say "+ word +" in english?")
+
+                    #get possible answers
+                    answers_str = []
+                    answers_str.append(str(total_dict[word])) #correct answer
+                    correct_answer.append(str(total_dict[word]))
+                    wrong_words = word_list
+                    wrong_words.remove(word)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(total_dict[wrong_ans]) #wrong answer
+                    wrong_words.remove(wrong_ans)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(total_dict[wrong_ans]) #wrong answer
+                    renpy.random.shuffle(answers_str)
+                    all_answers.append(answers_str)
+
+
+                elif qint == 1:
+                    word_list = list(total_dict.keys())
+                    word = renpy.random.choice(word_list)
+                    question_statement.append("How to say "+ str(total_dict[word]) + " in this language?")
+
+                    #get possible answers
+                    answers_str = []
+                    answers_str.append(word) #correct answer
+                    wrong_words = word_list
+                    correct_answer.append(word)
+                    wrong_words.remove(word)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(wrong_ans) #wrong answer
+                    wrong_words.remove(wrong_ans)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(wrong_ans) #wrong answer
+                    renpy.random.shuffle(answers_str)
+                    all_answers.append(answers_str)
+
+        jump question1
+
+    label question1:
+        None "[question_statement[0]]"
+        $print(all_answers)
+        $print(correct_answer)
+        menu:
+            "[all_answers[0][0]]":
+                if all_answers[0][0] == correct_answer[0]:
+                    $correct += 1
+                jump question2
+            "[all_answers[0][1]]":
+                if all_answers[0][1] == correct_answer[0]:
+                    $correct += 1
+                jump question2
+            "[all_answers[0][2]]":
+                if all_answers[0][2] == correct_answer[0]:
+                    $correct += 1
+                jump question2   
+    label question2:
+        None "[question_statement[1]]"
+        menu:
+            "[all_answers[1][0]]":
+                if all_answers[1][0] == correct_answer[1]:
+                    $correct += 1
+                jump question3
+            "[all_answers[1][1]]":
+                if all_answers[1][1] == correct_answer[1]:
+                    $correct += 1
+                jump question3
+            "[all_answers[1][2]]":
+                if all_answers[1][2] == correct_answer[1]:
+                    $correct += 1
+                jump questiont3
+    label question3:
+        None "[question_statement[2]]"
+        menu:
+            "[all_answers[2][0]]":
+                if all_answers[2][0] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+            "[all_answers[2][1]]":
+                if all_answers[2][1] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+            "[all_answers[2][2]]":
+                if all_answers[2][2] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+    label question4:
+        None "[question_statement[3]]"
+        menu:
+            "[all_answers[3][0]]":
+                if all_answers[3][0] == correct_answer[3]:
+                    $correct += 1
+                jump question5
+            "[all_answers[3][1]]":
+                if all_answers[3][1] == correct_answer[3]:
+                    $correct += 1
+                jump question5
+            "[all_answers[3][2]]":
+                if all_answers[3][2] == correct_answer[3]:
+                    $correct += 1
+                jump questiont5
+
+    label question5:
+        None "[question_statement[4]]"
+        menu:
+            "[all_answers[4][0]]":
+                if all_answers[4][0] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+            "[all_answers[4][1]]":
+                if all_answers[4][1] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+            "[all_answers[4][2]]":
+                if all_answers[4][2] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+                
+                   
+
+    label post_test:
+        mc "{i}I got [correct]/5 this time."
+        if correct == 5:
+            mc "I've passed the test! I am finding my place in this new city."
+        else:
+            mc "I've got some more practice to do... and some more money to make"
+        jump home
 
     label practice: 
+        mc "{i}It's a good thing I bought this language book before I gave up my old life!{/i}"
+        mc "{i}Time to Lock In{/i}"
+        mc "oops no code"
