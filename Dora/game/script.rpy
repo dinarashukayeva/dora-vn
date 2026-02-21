@@ -3,7 +3,6 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 default money = 0
-$money = 1000
 define mc = Character("MC")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
@@ -15,7 +14,7 @@ image bg train:
 # The game starts here.
 
 label start:
-
+    $ money = 1000
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
@@ -306,7 +305,7 @@ label Roulette:
     default value = 0   
     default bet = 0
     $value = renpy.random.random()
-    mc "How much should I bet?"
+    mc "How much should I bet? I have $[money]."
     menu:
         "1/10 of my money":
             $bet = money/10
@@ -326,34 +325,44 @@ label Roulette:
                 "You Won"
                 $money = money + bet
                 pause 2
-                return
+                jump roulettepostgame
             else:
                 "You Lost"
                 $money = money - bet
                 pause 2.0
-                return
+                jump roulettepostgame
         "Black":
             if(value > 0.4857 and value < 0.9714):
                 "You Won"
                 $money = money + bet
                 pause 2.0
-                return
+                jump roulettepostgame
             else:
                 "You Lost"
                 $money = money - bet
                 pause 2.0
-                return
+                jump roulettepostgame
         "Green":
             if(value > 0.9714):
                 "You Won"
                 $money = money + bet*17
                 pause 2.0
-                return
+                jump roulettepostgame
             else:
                 "You Lost"
                 $money = money - bet
                 pause 2.0
-                return
+                jump roulettepostgame
+    label roulettepostgame:
+        menu:
+            "Continue playing":
+                if money < 1:
+                    mc "{i}I'm a bit too poor to keep gambling...{/i}"
+                    jump roulettepostgame
+                jump Roulette
+            "Stop playing":
+                mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
+        jump groceryStore
 
 
 
