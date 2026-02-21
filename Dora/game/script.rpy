@@ -58,6 +58,26 @@ init python:
 
 image bg train = DynamicDisplayable(apply_brightness, picture_name="train_bg.png")
 
+#UI (date and time) screen
+screen ui_datetime(date, time):
+    $print("HI")
+    vbox:
+        xalign 0.0
+        yalign 0.0
+        text "Date/Time"
+        python:
+            text_str = "day " + str(date)
+            if time == 0:
+                text_str += ", Morning"
+            elif time == 1:
+                text_str += ", Afternoon"
+            elif time == 2:
+                text_str += ", Evening"
+            else:
+                text_str += ", Night"
+        text text_str
+
+
 # The game starts here.
 
 label start:
@@ -563,10 +583,11 @@ label groceryStorePost:
         jump groceryStore
 
     label new_day:
-        scene bg home
-        with fade
         $ day += 1
         $ time = 0
+        $ renpy.show_screen(ui_datetime, [date,time])
+        scene bg home
+        with fade
         if day == 1:
             mc "It's my 2nd day here!"
         elif day == 2:
