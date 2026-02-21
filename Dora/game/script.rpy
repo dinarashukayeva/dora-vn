@@ -688,7 +688,7 @@ label groceryStorePost:
             "[all_answers[1][2]]":
                 if all_answers[1][2] == correct_answer[1]:
                     $correct += 1
-                jump questiont3
+                jump question3
     label question3:
         None "[question_statement[2]]"
         menu:
@@ -718,7 +718,7 @@ label groceryStorePost:
             "[all_answers[3][2]]":
                 if all_answers[3][2] == correct_answer[3]:
                     $correct += 1
-                jump questiont5
+                jump question5
 
     label question5:
         None "[question_statement[4]]"
@@ -747,6 +747,13 @@ label groceryStorePost:
         jump home
 
     label practice: 
-        mc "{i}It's a good thing I bought this language book before I gave up my old life!{/i}"
+        mc "{i}It's a good thing I hired a tutor to practice my skills!{/i}"
         mc "{i}Time to Lock In{/i}"
-        
+        "It will cost ($100)"
+        menu:
+            "Yes?":
+                money -= 100
+                jump start_practice
+            "No?":
+                jump home
+    label start_practice:
