@@ -14,6 +14,8 @@ image bg train:
     matrixcolor BrightnessMatrix(renpyBrightness)
 
 init python:
+    import re
+
     if persistent.text_font_size is None:
         persistent.text_font_size = 0
 
@@ -22,6 +24,38 @@ init python:
 
     if persistent.renpyBrightness is None:
         persistent.renpyBrightness = 0.0
+
+    def dyslexic_text_filter(s):
+        if not persistent.dyslexic_font:
+            return s
+        # Split into Ren'Py tags and plain text segments
+        parts = re.split(r'(\{[^}]*\})', s)
+        result = []
+        for part in parts:
+            if part.startswith('{') and part.endswith('}'):
+                # Ren'Py tag — leave as-is
+                result.append(part)
+            else:
+                # Wrap runs of non-ASCII chars in a Unicode-capable font
+                processed = []
+                in_unicode = False
+                for char in part:
+                    if ord(char) > 127:
+                        if not in_unicode:
+                            processed.append('{font=Arial Unicode.ttf}')
+                            in_unicode = True
+                        processed.append(char)
+                    else:
+                        if in_unicode:
+                            processed.append('{/font}')
+                            in_unicode = False
+                        processed.append(char)
+                if in_unicode:
+                    processed.append('{/font}')
+                result.append(''.join(processed))
+        return ''.join(result)
+
+    config.say_menu_text_filter = dyslexic_text_filter
 
     def apply_brightness(st, at):
         return Transform("train.webp", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
@@ -33,6 +67,7 @@ image bg train = DynamicDisplayable(apply_brightness)
 
 label start:
     $ money = 1000
+    $ debt = 0
     $ day = 0
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
@@ -117,9 +152,6 @@ label neighbours1:
         jump neighbours2
 
 label neighbours2:
-    scene outside
-    show n 
-    with fade
 
     n "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
@@ -159,10 +191,13 @@ label neighbours2:
 label casino:
     scene bg casino
 
-    mc "{i}I feel right home... where I'm meant to be.{/i}"
-    mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
-    mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
-    mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+    if day == 0:
+        mc "{i}I feel right home... where I'm meant to be.{/i}"
+        mc "{i}No matter what language, money speaks the same... and I speak money.{/i}"
+        mc "{i}Time to start with the good old reliable - Blackjack.{/i}"
+        mc "{i}Wait - what?? These cards don't have numbers or symbols... just words??{/i}"
+    else:
+        mc "{i}Back to the grind!{/i}"
     menu:
         "{i}I don't know if I can win in any of these other games... and Blackjack is my best bet...{/i}":
             jump blackjack
@@ -299,6 +334,7 @@ label blackjack:
     label lose:
         dealer "Sorry, looks like you lose." # someone put some unicode here
         jump postgamemenu
+
     label postgamemenu:
         menu:
             "Continue playing":
@@ -308,7 +344,7 @@ label blackjack:
                 jump betinput
             "Stop playing":
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
-                jump groceryStore
+                jump neighbour_loan
 
 label Roulette:
     show mc 
@@ -375,7 +411,39 @@ label Roulette:
                 jump Roulette
             "Stop playing":
                 mc "{i}Time to call it there, I think I've earned enough for today.{/i}"
+        jump neighbour_loan
+
+label neighbour_loan:
+    if money == 0:
+        scene bg mansion_outside
+        with None
+        show n
+        with fade
+        n "unicode here: Hey do you need a loan"
+        mc "i have 0 money."
+        n "i'll give you 200$ (joshua this has to be whatever the price of the exp)"
+        mc "{i}My neighbour gave me 200 dollars! I'll have to pay them back eventually.{/i}"
+        $money += 200
+        $debt += 200
+    elif money > debt and debt > 0:
+        scene bg mansion_outside
+        with None
+        show n
+        with fade
+        n "unicode here: Hello! do you have my money"
+        menu:
+            "Pay them back":
+                mc "Thank you! idk somone fix this dialogue pls"
+                $ money -= debt
+                jump groceryStore
+            "Pay them back but be mean about it":
+                mc "fine >:("
+                jump groceryStore
+    
+    if day == 0:
         jump groceryStore
+    else: 
+        jump home
 
 label groceryStore:
     scene bg grocery
@@ -470,35 +538,56 @@ label groceryStorePost:
     $money -= cost
     mc "Thank you! {i}Looks like I have $[money] left.{/i}"
 
-    jump home
+    if day == 0:
+        jump home_end
+    else:
+        jump home
 
-    label home:
+    label home_end:
         scene bg home
         with fade
         mc "{i}Finally home! I will need to pass the language exam soon. I should practice... Tomorrow.{/i}"
-        None "It's a new day!"
-        jump new_day_neighbour
+        jump new_day
 
     label new_day_neighbour:
-        mc "{i} It's my neighbour from the first day!"
-        n "add unicode later (less than before): Hello! It's good to see you again!"
+        mc "{i} It's my neighbour from before."
+        n "add unicode later (less than before?): Hello! It's good to see you again! Are you going to the grocery store?"
         mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
+        jump groceryStore
 
+    label new_day:
+        scene bg home
+        with fade
+        $ day += 1
+        $ time = 0
+        if day == 1:
+            mc "It's my 2nd day here!"
+        elif day == 2:
+            mc "It's my 3rd day here!"
+        else:
+            mc "It's my [day]th day here!"
+        jump home
+
+    label home:
         mc "{i}What should I do?{/i}"
         menu:
             "Attempt the language exam":
                 jump exam
             "Go GAMBLING":
                 mc "wait you haven't updated the casino code yet noooo-"
+                $time += 1
                 jump casino
             "Go to the grocery store":
                 mc "wait you haven't updated the grocery store code yet noooo-"
-                mc "i think we've gotta change it so that it's like uhh different food items eevery day."
-                mc "and like have a dictinoary and just pull randomly from that"
-                mc "also we need to have"
-                jump groceryStore
-            "do something else (come up with something)":
+                $time += 1
+                jump new_day_neighbour
+            "Study the language":
+                $time += 1
                 mc "i haven't done anything here yet"
+                jump practice
 
     label exam:
-        mc "you haven't coded the exaam yet lol"
+        mc "you haven't coded the exam yet lol"
+
+
+    label practice: 

@@ -112,10 +112,6 @@ screen say(who, what):
             id "what" 
             size gui.text_size + persistent.text_font_size
 
-            ## if dyslexic_font variable is True, set font of dialogues to OpenDyslexic
-            if persistent.dyslexic_font:
-                font "fonts/open-dyslexic.ttf"
-
 
     ## If there's a side image, display it above the text. Do not display on the
     ## phone variant - there's no room.
@@ -773,8 +769,9 @@ screen preferences():
                 vbox:
                     style_prefix "radio"
                     label _("Dyslexic Font")
-                    textbutton _("On") action SetField(persistent, "dyslexic_font", True)
-                    textbutton _("Off") action SetField(persistent, "dyslexic_font", False)
+                    # clicking on/off resets the whole gui (reads new font value in gui.text_font, gui.name_text_font, and gui.interface_text_font)
+                    textbutton _("On") action [SetField(persistent, "dyslexic_font", True), Function(gui.rebuild)]
+                    textbutton _("Off") action [SetField(persistent, "dyslexic_font", False), Function(gui.rebuild)]
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.
