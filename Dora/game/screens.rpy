@@ -107,7 +107,7 @@ screen say(who, what):
                 style "namebox"
                 text who id "who"
 
-        text what id "what"
+        text what id "what" size gui.text_size + persistent.text_font_size
 
 
     ## If there's a side image, display it above the text. Do not display on the
@@ -759,9 +759,9 @@ screen preferences():
                 vbox:
                     style_prefix "radio"
                     label _("Font size")
-                    textbutton _("Small") action SetField(persistent, "text_font_size", -2)
+                    textbutton _("Small") action SetField(persistent, "text_font_size", -5)
                     textbutton _("Medium") action SetField(persistent, "text_font_size", 0)
-                    textbutton _("Large") action SetField(persistent, "text_font_size", 2)
+                    textbutton _("Large") action SetField(persistent, "text_font_size", 5)
 
                 vbox:
                     style_prefix "radio"

@@ -9,7 +9,7 @@ define dealer = Character("Dealer")
 
 init python:
     if persistent.text_font_size is None:
-        persistent.text_font_size = 0.0
+        persistent.text_font_size = 0
 
     if persistent.dyslexic_font is None:
         persistent.dyslexic_font = False
