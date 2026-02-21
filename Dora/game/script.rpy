@@ -57,11 +57,7 @@ init python:
 
     config.say_menu_text_filter = dyslexic_text_filter
 
-    def apply_brightness(st, at):
-        return Transform("train_bg.png", matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
-    
-
-image bg train = DynamicDisplayable(apply_brightness)
+image bg train = DynamicDisplayable(apply_brightness, picture_name="train_bg.png")
 
 # The game starts here.
 
@@ -761,7 +757,7 @@ label groceryStorePost:
         "It will cost ($100)"
         menu:
             "Yes?":
-                money -= 100
+                $ money -= 100
                 jump start_practice
             "No?":
                 jump home
