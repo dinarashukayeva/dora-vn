@@ -383,72 +383,93 @@ label groceryStore:
     show mc 
     with fade
     mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
+    mc "{i}There's a grocery store that speaks English, but those prices are absurd... {/i}"
+    mc "{i}Maybe the local store down the street has some better deals, but I'll have to learn the language...{/i}"
     pause 0.5
-    mc "{i}What I truly want is chocolate, but I only know the words for egg...{/i}"
-    mc "{i}A flier with pictures! I've gotta memorize the words on this to be able to buy what I need.{/i}"
-    f "milk: \u273F\u22B0, bread: \u263E\u2630, chocolate: \u22CB\u21E7"
-    
-    jump groceryStoreMinigame1
+    $ keywords = {"\u273F": "milk", "\u22B0": "apples", "\u263E": "cheese", "\u2630": "bread", "\u22CB": "potatoes", "\u21E7": "beef"}
+    $ todayswords = renpy.random.sample(list(keywords.keys()), 2)
+    $ wanteditems = keywords[todayswords[0]] + " and " + keywords[todayswords[1]]
+    mc "{i}Today, I'm looking to get [wanteditems].{/i}"
+    $ allwords = ["\u273F", "\u22B0", "\u263E", "\u2630", "\u22CB", "\u21E7", "\u2761", "\u2752", "\uFE41", "\u27A2", "\u3007", "\u300F", "\u2727", "\u2711", "\u2710", "\u2659"]
+    $ renpy.random.shuffle(allwords)
+    $ aisle1 = ""
+    $ aisle2 = ""
+    $ aisle3 = ""
+    $ aisle4 = ""
+    python:
+        for i in allwords[:4]:
+            aisle1 += i
+        for i in allwords[4:8]:
+            aisle2 += i
+        for i in allwords[8:12]:
+            aisle3 += i
+        for i in allwords[12:]:
+            aisle4 += i
+    $ aislesleft = 2
+    $ collecteditems = []
 
-label groceryStoreMinigame1:
-    $items = []
-    mc "{i}The first thing I'm looking for is milk. Which aisle would that be in?{/i}"
-    menu:
-        "\u2761 \u2752, \u273F \u22B0, \uFE41 \u27A2":
-            mc "{i}Correct! Found what I needed."
-            $items.append("milk")
-            jump groceryStoreMinigame2
-        "\u2727 \u2711, \u2710 \u2659, \u264B \u27AD":
-            mc "{i}Aww, no milk here...{/i}"
-            jump groceryStoreMinigame2
+    jump groceryStoreMinigameAisles
 
-label groceryStoreMinigame2:
-    mc "{i}Now I need bread.{/i}"
+label groceryStoreMinigameAisles:
+    mc "{i}Looks like there's 4 aisles to choose from, but I only have time to check [aislesleft] more aisles before the store closes.{/i}"
+    $ founditems = []
     menu:
-        "\u3030\u3057, \u273F\u2736, \u2711\u270D":
-            mc "{i}Aww, no bread here...{/i}"
-            jump groceryStoreMinigame3
-        "\u3007\u300F, \u263E\u2630, \u3014\u3037":
-            mc "{i}Correct! Found what I needed.{/i}"
-            $items.append("bread")
-            jump groceryStoreMinigame3
+        "[aisle1]":
+            python:
+                for i in allwords[:4]:
+                    if i in todayswords:
+                        founditems.append(keywords[i])
+                        todayswords.remove(i)
+            jump groceryStoreMinigameCheck
+        "[aisle2]":
+            python:
+                for i in allwords[4:8]:
+                    if i in todayswords:
+                        founditems.append(keywords[i])
+                        todayswords.remove(i)
+            jump groceryStoreMinigameCheck
+        "[aisle3]":
+            python:
+                for i in allwords[8:12]:
+                    if i in todayswords:
+                        founditems.append(keywords[i])
+                        todayswords.remove(i)
+            jump groceryStoreMinigameCheck
+        "[aisle4]":
+            python:
+                for i in allwords[12:]:
+                    if i in todayswords:
+                        founditems.append(keywords[i])
+                        todayswords.remove(i)
+            jump groceryStoreMinigameCheck
 
-label groceryStoreMinigame3:
-    mc "{i}Last but not least, chocolate!{/i}"
-    menu:
-        "\u2727 \u2711, \u264B \u27AD, \u273F \u22B0":
-            mc "{i}Aww, no chocolate here...{/i}"
-            jump groceryStorePost
-        "\u22CB\u21E7, \u273F\u2736, \u2711\u270D":
-            mc "{i}Correct! Found what I needed.{/i}"
-            $items.append("chocolate")
-            jump groceryStorePost
+label groceryStoreMinigameCheck:
+    if founditems == []:
+        mc "{i}Aww, nothing that I need here...{/i}"
+    else:
+        $ founditemsstring = ""
+        python:
+            for i in founditems:
+                founditemsstring += i + ", "
+                collecteditems.append(i)
+            founditemsstring = founditemsstring[:-2]
+        mc "Found: [founditemsstring]"
+    $ aislesleft -= 1
+    if todayswords == [] or aislesleft == 0:
+        jump groceryStorePost
+    jump groceryStoreMinigameAisles
 
 label groceryStorePost:
-    if len(items) < 3:
-        mc "{i}I didn't find everything I needed... guess I'll pick up some eggs as well.{/i}"
-        $items.append("eggs")
-    mc "{i}Now I only need to pay for everything I got!{/i}"
-    scene bg cashier
-    show c
-    with fade
-    c "add unicode later: Hello, would you like to pay?"
-    mc "Umm. Yes!"
-    $item_str = ""
-    python:
-        for i in items:
-            item_str = item_str + ", " + i
-    mc "{i} I ended up with [item_str].{/i}"
-    $cost = len(items) * 20
-
+    $ cost = len(collecteditems) * 50
+    if len(collecteditems) < 2:
+        mc "{i}I didn't find everything I needed... guess I'll have to pick up the rest from the expensive store...{/i}"
+        $ cost += 100 * (2 - len(collecteditems))
+        
     #have the cost be the only thing not blurred i think. or rely on your blackjack knowledge?
-    c "add unicode later: That will be [cost]$."
-    if money >= cost:
-        mc "Thank you!"
-        $money -= cost
-    else:
-        mc "{i}I don't have enough...{/i}"
-        mc "{i}I'll put this stuff back.{/i}"
+    c "add unicode later: That will be $[cost]."
+    $money -= cost
+    mc "Thank you! {i}Looks like I have $[money] left.{/i}"
+
     jump home
 
     label home:
