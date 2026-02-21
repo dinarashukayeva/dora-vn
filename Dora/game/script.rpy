@@ -2,7 +2,6 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-$unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
 default money = 0
 define mc = Character("You")
 define c = Character("Cashier")
@@ -66,6 +65,8 @@ image bg train = DynamicDisplayable(apply_brightness)
 # The game starts here.
 
 label start:
+    $ unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
+    $ flippedunicodenumbers = {v: k for k, v in unicodenumbers.items()}
     $ money = 1000
     $ debt = 0
     $ day = 0
@@ -599,7 +600,6 @@ label groceryStorePost:
                     jump new_day_neighbour
                 "Study the language":
                     $time += 1
-                    mc "no code, i haven't done anything here yet"
                     jump practice
 
     label exam:
@@ -762,7 +762,16 @@ label groceryStorePost:
         menu:
             "Yes?":
                 $money -= 100
-                jump start_practice
+                jump startPractice
             "No?":
                 jump home
-    label start_practice:
+    label startPractice:
+        $valuex = renpy.random.randint(1,13)
+        "what is this stand for? [flippedunicodenumbers[valuex]]"
+        $ guess = int(renpy.input (_("Input your guess."), allow="0123456789."))
+        if(guess == valuex):
+            "Thats Correct!"
+            jump home
+        else: 
+            "That Incorrect"
+            jump home
