@@ -301,7 +301,7 @@ label blackjack:
             jump playerChoice
     label stand:
         # [remove facedown card sprite]
-        while dealerscore < 21:
+        while dealerscore < 17:
             $ dealerdraw = renpy.random.randint(1,13)
             $ dealercards += flippedunicodenumbers[dealerdraw]
             if dealerdraw > 10:
