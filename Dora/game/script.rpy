@@ -452,11 +452,32 @@ label groceryStorePost:
     jump home
 
     label home:
+        scene bg home
+        with fade
         mc "{i}Finally home! I will need to pass the language exam soon. I should practice... Tomorrow.{/i}"
         None "It's a new day!"
         jump new_day_neighbour
 
-    label day2_neighbour:
+    label new_day_neighbour:
         mc "{i} It's my neighbour from the first day!"
         n "add unicode later (less than before): Hello! It's good to see you again!"
-        mc "Hello! ..."
+        mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
+
+        mc "{i}What should I do?{/i}"
+        menu:
+            "Attempt the language exam":
+                jump exam
+            "Go GAMBLING":
+                mc "wait you haven't updated the casino code yet noooo-"
+                jump casino
+            "Go to the grocery store":
+                mc "wait you haven't updated the grocery store code yet noooo-"
+                mc "i think we've gotta change it so that it's like uhh different food items eevery day."
+                mc "and like have a dictinoary and just pull randomly from that"
+                mc "also we need to have"
+                jump groceryStore
+            "do something else (come up with something)":
+                mc "i haven't done anything here yet"
+
+    label exam:
+        mc "you haven't coded the exaam yet lol"
