@@ -428,10 +428,16 @@ label neighbour_loan:
             "Pay them back":
                 mc "Thank you! idk somone fix this dialogue pls"
                 $ money -= debt
-                jump groceryStore
+                if day == 0:
+                    jump groceryStore
+                else: 
+                    jump home
             "Pay them back but be mean about it":
                 mc "fine >:("
-                jump groceryStore
+                if day == 0:
+                    jump groceryStore
+                else: 
+                    jump home
     
     if day == 0:
         jump groceryStore
@@ -562,6 +568,8 @@ label groceryStorePost:
         jump home
 
     label home:
+        scene bg home
+        with fade
         mc "{i}What should I do?{/i}"
         menu:
             "Attempt the language exam":
@@ -580,7 +588,158 @@ label groceryStorePost:
                 jump practice
 
     label exam:
-        mc "you haven't coded the exam yet lol"
+        mc "The language exam costs 500$ to atttempt, but once I pass it, i'll be able to find a job..."
+        mc "Am I really ready?"
+        menu:
+            "Yes!":
+                $time += 1
+                $correct = 0
+                #add all the dictionaries needed here
+                $unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
+                $total_dict = keywords | unicodenumbers
+                jump question_t
+            "I think I need more time...":
+                jump home
 
+    label question_t:
+        python:
+            correct_answer = []
+            question_statement = []
+            all_answers = []
+
+            for i in range(5):
+                qint = renpy.random.randint(0,1)
+                if qint == 0:
+                    word_list = list(total_dict.keys())
+                    word = renpy.random.choice(word_list)
+                    question_statement.append("How to say "+ word +" in english?")
+
+                    #get possible answers
+                    answers_str = []
+                    answers_str.append(str(total_dict[word])) #correct answer
+                    correct_answer.append(str(total_dict[word]))
+                    wrong_words = word_list
+                    wrong_words.remove(word)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(total_dict[wrong_ans]) #wrong answer
+                    wrong_words.remove(wrong_ans)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(total_dict[wrong_ans]) #wrong answer
+                    renpy.random.shuffle(answers_str)
+                    all_answers.append(answers_str)
+
+
+                elif qint == 1:
+                    word_list = list(total_dict.keys())
+                    word = renpy.random.choice(word_list)
+                    question_statement.append("How to say "+ str(total_dict[word]) + " in this language?")
+
+                    #get possible answers
+                    answers_str = []
+                    answers_str.append(word) #correct answer
+                    wrong_words = word_list
+                    correct_answer.append(word)
+                    wrong_words.remove(word)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(wrong_ans) #wrong answer
+                    wrong_words.remove(wrong_ans)
+                    wrong_ans = renpy.random.choice(wrong_words)
+                    answers_str.append(wrong_ans) #wrong answer
+                    renpy.random.shuffle(answers_str)
+                    all_answers.append(answers_str)
+
+        jump question1
+
+    label question1:
+        None "[question_statement[0]]"
+        $print(all_answers)
+        $print(correct_answer)
+        menu:
+            "[all_answers[0][0]]":
+                if all_answers[0][0] == correct_answer[0]:
+                    $correct += 1
+                jump question2
+            "[all_answers[0][1]]":
+                if all_answers[0][1] == correct_answer[0]:
+                    $correct += 1
+                jump question2
+            "[all_answers[0][2]]":
+                if all_answers[0][2] == correct_answer[0]:
+                    $correct += 1
+                jump question2   
+    label question2:
+        None "[question_statement[1]]"
+        menu:
+            "[all_answers[1][0]]":
+                if all_answers[1][0] == correct_answer[1]:
+                    $correct += 1
+                jump question3
+            "[all_answers[1][1]]":
+                if all_answers[1][1] == correct_answer[1]:
+                    $correct += 1
+                jump question3
+            "[all_answers[1][2]]":
+                if all_answers[1][2] == correct_answer[1]:
+                    $correct += 1
+                jump questiont3
+    label question3:
+        None "[question_statement[2]]"
+        menu:
+            "[all_answers[2][0]]":
+                if all_answers[2][0] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+            "[all_answers[2][1]]":
+                if all_answers[2][1] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+            "[all_answers[2][2]]":
+                if all_answers[2][2] == correct_answer[2]:
+                    $correct += 1
+                jump question4
+    label question4:
+        None "[question_statement[3]]"
+        menu:
+            "[all_answers[3][0]]":
+                if all_answers[3][0] == correct_answer[3]:
+                    $correct += 1
+                jump question5
+            "[all_answers[3][1]]":
+                if all_answers[3][1] == correct_answer[3]:
+                    $correct += 1
+                jump question5
+            "[all_answers[3][2]]":
+                if all_answers[3][2] == correct_answer[3]:
+                    $correct += 1
+                jump questiont5
+
+    label question5:
+        None "[question_statement[4]]"
+        menu:
+            "[all_answers[4][0]]":
+                if all_answers[4][0] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+            "[all_answers[4][1]]":
+                if all_answers[4][1] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+            "[all_answers[4][2]]":
+                if all_answers[4][2] == correct_answer[4]:
+                    $correct += 1
+                jump post_test
+                
+                   
+
+    label post_test:
+        mc "{i}I got [correct]/5 this time."
+        if correct == 5:
+            mc "I've passed the test! I am finding my place in this new city."
+        else:
+            mc "I've got some more practice to do... and some more money to make"
+        jump home
 
     label practice: 
+        mc "{i}It's a good thing I bought this language book before I gave up my old life!{/i}"
+        mc "{i}Time to Lock In{/i}"
+        mc "oops no code"
