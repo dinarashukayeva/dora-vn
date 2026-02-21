@@ -9,7 +9,7 @@ define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
 define n = Character("Neighbour")
 image bg train:
-    "train.webp"
+    "train_bg.png"
     matrixcolor BrightnessMatrix(renpyBrightness)
 
 init python:
