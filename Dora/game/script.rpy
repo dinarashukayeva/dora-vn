@@ -152,9 +152,6 @@ label neighbours1:
         jump neighbours2
 
 label neighbours2:
-    scene outside
-    show n 
-    with fade
 
     n "{noalt}\u20AB\u1FE9\u119A \u10DE \u0F9C\u0F3F\u0F4C\u0F31 \u0F5B\u113C \u1182{/noalt}{alt}Watellyiuchranksensionacton{/alt} you {noalt}\u301E\u301F \u309C \u3171\u3209\u30F4\u3047\u2660{/noalt}{alt}castlenienakeloen{/alt}. Bye bye {noalt}\u2731\u272C{/noalt}{alt}moar{/alt}~"
 
@@ -337,6 +334,7 @@ label blackjack:
     label lose:
         dealer "Sorry, looks like you lose." # someone put some unicode here
         jump postgamemenu
+
     label postgamemenu:
         menu:
             "Continue playing":
@@ -442,7 +440,10 @@ label neighbour_loan:
                 mc "fine >:("
                 jump groceryStore
     
-    jump groceryStore
+    if day == 0:
+        jump groceryStore
+    else: 
+        jump home
 
 label groceryStore:
     scene bg grocery
@@ -516,42 +517,57 @@ label groceryStorePost:
     else:
         mc "{i}I don't have enough...{/i}"
         mc "{i}I'll put this stuff back.{/i}"
-    jump home
 
-    label home:
+    if day == 0:
+        jump home_end
+    else:
+        jump home
+
+    label home_end:
         scene bg home
         with fade
         mc "{i}Finally home! I will need to pass the language exam soon. I should practice... Tomorrow.{/i}"
-        jump new_day_neighbour
+        jump new_day
 
     label new_day_neighbour:
+        mc "{i} It's my neighbour from before."
+        n "add unicode later (less than before?): Hello! It's good to see you again! Are you going to the grocery store?"
+        mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
+        jump groceryStore
+
+    label new_day:
+        scene bg home
+        with fade
         $ day += 1
+        $ time = 0
         if day == 1:
             mc "It's my 2nd day here!"
         elif day == 2:
             mc "It's my 3rd day here!"
         else:
             mc "It's my [day]th day here!"
+        jump home
 
-        mc "{i} It's my neighbour from before."
-        n "add unicode later (less than before?): Hello! It's good to see you again!"
-        mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
-
+    label home:
         mc "{i}What should I do?{/i}"
         menu:
             "Attempt the language exam":
                 jump exam
             "Go GAMBLING":
                 mc "wait you haven't updated the casino code yet noooo-"
+                $time += 1
                 jump casino
             "Go to the grocery store":
                 mc "wait you haven't updated the grocery store code yet noooo-"
-                mc "i think we've gotta change it so that it's like uhh different food items eevery day."
-                mc "and like have a dictinoary and just pull randomly from that"
-                mc "also we need to have"
-                jump groceryStore
-            "do something else (come up with something)":
+                $time += 1
+                jump new_day_neighbour
+            "Study the language":
+                $time += 1
                 mc "i haven't done anything here yet"
+                jump practice
 
     label exam:
         mc "you haven't coded the exam yet lol"
+
+
+    label practice: 
