@@ -155,7 +155,6 @@ label casino:
 
 label blackjack:
     mc "Deal me in."
-    $ money = 1000
     $ bet = 0
     label betinput:
         $ bet = int(renpy.input (_("Input your bet. You have $[money] left."), allow="0123456789."))
