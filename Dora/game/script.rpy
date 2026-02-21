@@ -2,6 +2,7 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
+$unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
 default money = 0
 define mc = Character("MC")
 define c = Character("Cashier")
@@ -447,8 +448,6 @@ label neighbour_loan:
 label groceryStore:
     scene bg grocery
     with None
-    show mc 
-    with fade
     mc "{i}Now I can truly start my new life! I’ve got [money] dollars to spend on groceries{/i}"
     mc "{i}There's a grocery store that speaks English, but those prices are absurd... {/i}"
     mc "{i}Maybe the local store down the street has some better deals, but I'll have to learn the language...{/i}"
@@ -742,4 +741,4 @@ label groceryStorePost:
     label practice: 
         mc "{i}It's a good thing I bought this language book before I gave up my old life!{/i}"
         mc "{i}Time to Lock In{/i}"
-        mc "oops no code"
+        
