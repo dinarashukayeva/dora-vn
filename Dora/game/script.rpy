@@ -415,9 +415,10 @@ label neighbour_loan:
         with None
         show neighbour
         with fade
-        n "unicode here: Hey do you need a loan"
-        mc "im running low on money."
-        n "i'll give you 200$ (joshua this has to be whatever the price of the exp)"
+        n "\u0409not\u0496\u0547happy\u0B07\u21A7casino?"
+        n "\u2021\u20A6\u2180loan?"
+        mc "Yeah, the casino didn't go well, so a loan would be nice."
+        n "\u2200 loan \u0D17 $200."
         mc "{i}My neighbour gave me 200 dollars! I'll have to pay them back eventually.{/i}"
         $money += 200
         $debt += 200
@@ -429,14 +430,15 @@ label neighbour_loan:
         n "unicode here: Hello! do you have my money"
         menu:
             "Pay them back":
-                mc "Thank you! idk somone fix this dialogue pls"
                 $ money -= debt
+                mc "Thank you for the loan, here's your money back! {i}Seems like I have $[money] left.{/i}"
                 if day == 0:
                     jump groceryStore
                 else: 
                     jump home
             "Pay them back but be mean about it":
                 mc "fine >:("
+                $ money -= debt
                 if day == 0:
                     jump groceryStore
                 else: 
