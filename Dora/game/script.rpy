@@ -418,13 +418,13 @@ label Roulette:
         jump neighbour_loan
 
 label neighbour_loan:
-    if money == 0:
+    if money < 200:
         scene bg mansion_outside
         with None
         show n
         with fade
         n "unicode here: Hey do you need a loan"
-        mc "i have 0 money."
+        mc "im running low on money."
         n "i'll give you 200$ (joshua this has to be whatever the price of the exp)"
         mc "{i}My neighbour gave me 200 dollars! I'll have to pay them back eventually.{/i}"
         $money += 200
