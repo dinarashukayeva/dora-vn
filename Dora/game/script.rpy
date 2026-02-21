@@ -7,7 +7,6 @@ define mc = Character("MC")
 define c = Character("Cashier")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
-define f = Character("flier")
 define n = Character("Neighbour")
 image bg train:
     "train.webp"
@@ -219,17 +218,21 @@ label blackjack:
     $ playerscore = 0
     $ playeraces = 0
     $ dealeraces = 0
+    $ unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
+    $ flippedunicodenumbers = {v: k for k, v in unicodenumbers.items()}
+    $ playercards = ""
+    $ dealercards = ""
 
     # Deal cards
     $ playerdraw = renpy.random.randint(1,13) # 1st player draw
-    # [insert card sprite into scene here]
+    $ playercards += flippedunicodenumbers[playerdraw]
     if playerdraw > 10:
         $ playerdraw = 10
     elif playerdraw == 1:
         $ playeraces += 1
     $ playerscore += playerdraw
     $ playerdraw = renpy.random.randint(1,13) # Second player draw
-    # [insert card sprite into scene here]
+    $ playercards += flippedunicodenumbers[playerdraw]
     if playerdraw > 10:
         $ playerdraw = 10
     elif playerdraw == 1:
@@ -237,7 +240,7 @@ label blackjack:
         $ playerscore += playerdraw
 
     $ dealerdraw = renpy.random.randint(1,13)
-    # [insert card sprite into scene here]
+    $ dealercards += flippedunicodenumbers[dealerdraw]
     if dealerdraw > 10:
         $ dealerdraw = 10
     elif dealerdraw == 1:
@@ -247,9 +250,10 @@ label blackjack:
     label playerChoice:
         # Have buttons appear
         menu:
+            "Your cards: [playercards]\nDealer's cards: [dealercards]{fast}"
             "Hit":
                 $ playerdraw = renpy.random.randint(1,13)
-                # [insert card sprite into scene here]
+                $ playercards += flippedunicodenumbers[playerdraw]
                 if playerdraw > 10:
                     $ playerdraw = 10
                 elif playerdraw == 1:
@@ -266,7 +270,7 @@ label blackjack:
                 $ money -= bet
                 $ bet += bet
                 $ playerdraw = renpy.random.randint(1,13)
-                # [insert card sprite into scene here]
+                $ playercards += flippedunicodenumbers[playerdraw]
                 if playerdraw > 10:
                     $ playerdraw = 10
                 elif playerdraw == 1:
@@ -299,7 +303,7 @@ label blackjack:
         # [remove facedown card sprite]
         while dealerscore < 21:
             $ dealerdraw = renpy.random.randint(1,13)
-            # [insert card sprite into scene here]
+            $ dealercards += flippedunicodenumbers[dealerdraw]
             if dealerdraw > 10:
                 $ dealerdraw = 10
             elif dealerdraw == 1:
