@@ -331,14 +331,14 @@ label blackjack:
                 jump lose
     label win:
         if playerscore == 21:
-            dealer "\u23CF\u0C20, blackjack! \u0B9E\u235F" # someone put some unicode here
+            dealer "\u23CF\u0C20, blackjack! \u0B9E\u235F"
             $ money += bet * 3
         else:
-            dealer "\u0B9E\u235F, \u0D17win!" # someone put some unicode here
+            dealer "\u0B9E\u235F, \u0D17win!"
             $ money += bet * 2
         jump postgamemenu
     label lose:
-        dealer "\u0933, \u0554\u0462\u0D17 lose." # someone put some unicode here
+        dealer "\u0933, \u0554\u0462\u0D17 lose."
         jump postgamemenu
 
     label postgamemenu:
@@ -419,6 +419,7 @@ label Roulette:
         jump neighbour_loan
 
 label neighbour_loan:
+    $ money = round(money, 2)
     if money < 200:
         scene bg mansion_outside
         with None
@@ -570,7 +571,8 @@ label groceryStorePost:
     label new_day_neighbour:
         mc "{i} It's my neighbour from before. {/i}"
         n "add unicode later (less than before?): Hello! It's good to see you again! Are you going to the grocery store?"
-        mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
+        mc "Hello! Yes, hopefully I can find what I want there."
+        n "add unicode later: Good luck!"
         jump groceryStore
 
     label new_day:
