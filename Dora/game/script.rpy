@@ -799,7 +799,7 @@ label groceryStorePost:
         menu:
             "Yes?":
                 $ money -= 100
-                jump start_practice
+                jump startPractice
             "No?":
                 jump home
     label startPractice:
