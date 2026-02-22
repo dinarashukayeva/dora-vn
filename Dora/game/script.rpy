@@ -556,8 +556,13 @@ label groceryStorePost:
         
     #have the cost be the only thing not blurred i think. or rely on your blackjack knowledge?
     c "\u2021\u20A6 be $[cost]."
-    $money -= cost
-    mc "Thank you! {i}Looks like I have $[money] left.{/i}"
+    if money >= cost:
+        $ money -= cost
+        mc "Thank you! {i}Looks like I have $[money] left.{/i}"
+    else:
+        mc "{i}I don't have enough money to buy all the groceries...{/i}"
+        mc "{i}Maybe I can ask my neighbour for a loan...{/i}"
+        mc "Thank you, but I don't have enough money... See you next time..."
 
     if day == 0:
         jump home_end
