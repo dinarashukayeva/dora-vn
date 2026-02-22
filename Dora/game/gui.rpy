@@ -14,6 +14,12 @@ init python:
     def apply_brightness(st, at, picture_name="train_bg.png"):
         return Transform(picture_name, matrixcolor=BrightnessMatrix(persistent.renpyBrightness)), 0
 
+    # A font group that uses OpenDyslexic for ASCII and Arial Unicode for everything else
+    dyslexic_font_group = FontGroup()
+    dyslexic_font_group.add("fonts/open-dyslexic.ttf", 0x0020, 0x007E)  # ASCII printable
+    dyslexic_font_group.add("fonts/Arial Unicode.ttf", 0x0000, 0x001F)  # control chars
+    dyslexic_font_group.add("fonts/Arial Unicode.ttf", 0x007F, 0xFFFF)  # everything else
+
 ## Enable checks for invalid or unstable properties in screens or transforms
 define config.check_conflicting_properties = True
 
@@ -60,13 +66,13 @@ define gui.interface_text_color = '#ffffff'
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
-define gui.text_font = "fonts/open-dyslexic.ttf" if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
+define gui.text_font = dyslexic_font_group if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
 
 ## The font used for character names.
-define gui.name_text_font = "fonts/open-dyslexic.ttf" if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
+define gui.name_text_font = dyslexic_font_group if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
 
 ## The font used for out-of-game text.
-define gui.interface_text_font = "fonts/open-dyslexic.ttf" if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
+define gui.interface_text_font = dyslexic_font_group if persistent.dyslexic_font else "fonts/Arial Unicode.ttf"
 
 ## The size of normal dialogue text.
 define gui.text_size = 33

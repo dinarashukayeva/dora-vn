@@ -33,37 +33,37 @@ init python:
     if persistent.renpyBrightness is None:
         persistent.renpyBrightness = 0.0
 
-    def dyslexic_text_filter(s):
-        if not persistent.dyslexic_font:
-            return s
-        # Split into Ren'Py tags and plain text segments
-        parts = re.split(r'(\{[^}]*\})', s)
-        result = []
-        for part in parts:
-            if part.startswith('{') and part.endswith('}'):
-                # Ren'Py tag — leave as-is
-                result.append(part)
-            else:
-                # Wrap runs of non-ASCII chars in a Unicode-capable font
-                processed = []
-                in_unicode = False
-                for char in part:
-                    if ord(char) > 127:
-                        if not in_unicode:
-                            processed.append('{font=Arial Unicode.ttf}')
-                            in_unicode = True
-                        processed.append(char)
-                    else:
-                        if in_unicode:
-                            processed.append('{/font}')
-                            in_unicode = False
-                        processed.append(char)
-                if in_unicode:
-                    processed.append('{/font}')
-                result.append(''.join(processed))
-        return ''.join(result)
+    # def dyslexic_text_filter(s):
+    #     if not persistent.dyslexic_font:
+    #         return s
+    #     # Split into Ren'Py tags and plain text segments
+    #     parts = re.split(r'(\{[^}]*\})', s)
+    #     result = []
+    #     for part in parts:
+    #         if part.startswith('{') and part.endswith('}'):
+    #             # Ren'Py tag — leave as-is
+    #             result.append(part)
+    #         else:
+    #             # Wrap runs of non-ASCII chars in a Unicode-capable font
+    #             processed = []
+    #             in_unicode = False
+    #             for char in part:
+    #                 if ord(char) > 127:
+    #                     if not in_unicode:
+    #                         processed.append('{font=fonts/Arial Unicode.ttf}')
+    #                         in_unicode = True
+    #                     processed.append(char)
+    #                 else:
+    #                     if in_unicode:
+    #                         processed.append('{/font}')
+    #                         in_unicode = False
+    #                     processed.append(char)
+    #             if in_unicode:
+    #                 processed.append('{/font}')
+    #             result.append(''.join(processed))
+    #     return ''.join(result)
 
-    config.say_menu_text_filter = dyslexic_text_filter
+    # config.say_menu_text_filter = None
 
 image bg train = DynamicDisplayable(apply_brightness, picture_name="train_bg.png")
 image bg casino = DynamicDisplayable(apply_brightness, picture_name="casino.png")
