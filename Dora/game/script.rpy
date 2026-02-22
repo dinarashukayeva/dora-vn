@@ -4,12 +4,21 @@
 # name of the character.
 default money = 0
 define mc = Character("You")
-define c = Character("Cashier")
+define c = Character("Employee")
 define intercom = Character("Train Conductor, Intercom")
 define dealer = Character("Dealer")
 define n = Character("Neighbour")
 image bg train:
     "train_bg.png"
+    matrixcolor BrightnessMatrix(renpyBrightness)
+image bg casino:
+    "casino.png"
+    matrixcolor BrightnessMatrix(renpyBrightness)
+image bg exam:
+    "exam.png"
+    matrixcolor BrightnessMatrix(renpyBrightness)
+image bg grocery:
+    "grocery.png"
     matrixcolor BrightnessMatrix(renpyBrightness)
 
 init python:
@@ -57,6 +66,10 @@ init python:
     config.say_menu_text_filter = dyslexic_text_filter
 
 image bg train = DynamicDisplayable(apply_brightness, picture_name="train_bg.png")
+image bg casino = DynamicDisplayable(apply_brightness, picture_name="casino.png")
+image bg grocery = DynamicDisplayable(apply_brightness, picture_name="grocery.png")
+image bg exam = DynamicDisplayable(apply_brightness, picture_name="exam.png")
+image bg outside = DynamicDisplayable(apply_brightness, picture_name="house.png")
 
 # The game starts here.
 
@@ -94,7 +107,7 @@ label start:
 label neighbours1:
     define Unknown = Character("???")
 
-    show bg house
+    show house
 
     mc "{i}My house… Thank goodness for this convenient map.{/i}"
 
@@ -320,14 +333,14 @@ label blackjack:
                 jump lose
     label win:
         if playerscore == 21:
-            dealer "\u23CF\u0C20, blackjack! \u0B9E\u235F" # someone put some unicode here
+            dealer "{noalt}\u23CF\u0C20{/noalt}{alt}te vigral{/noalt}, blackjack! {noalt}\u0B9E\u235F{/noalt}{alt}uhaditeper{/alt}" # someone put some unicode here
             $ money += bet * 3
         else:
-            dealer "\u0B9E\u235F, \u0D17win!" # someone put some unicode here
+            dealer "{noalt}\u0B9E\u235F, \u0D17{/noalt}{alt}te molo vigral{/alt}win!" # someone put some unicode here
             $ money += bet * 2
         jump postgamemenu
     label lose:
-        dealer "\u0933, \u0554\u0462\u0D17 lose." # someone put some unicode here
+        dealer "{noalt}\u0933, \u0554\u0462\u0D17{/noalt}{alt}nokonet praigre isviha{/alt} lose." # someone put some unicode here
         jump postgamemenu
 
     label postgamemenu:
@@ -409,23 +422,24 @@ label Roulette:
 
 label neighbour_loan:
     if money < 200:
-        scene bg mansion_outside
+        scene bg outside
         with None
-        show neighbour
+        show neighbour at right
         with fade
-        n "\u0409not\u0496\u0547happy\u0B07\u21A7casino?"
+        n "{noalt}\u0409not\u0496\u0547{/noalt}{alt}te nevigladesh{/alt}happy{noalt}\u0B07\u21A7{/noalt}{alt}tepreshot zavis{/alt}casino?"
         n "\u2021\u20A6\u2180loan?"
         mc "Yeah, the casino didn't go well, so a loan would be nice."
-        n "\u2200 loan \u0D17 $200."
+        n "{noalt}\u2200 loan \u0D17{/noalt}{alt}esli nedash loan pobiu{/alt} $200."
         mc "{i}My neighbour gave me 200 dollars! I'll have to pay them back eventually.{/i}"
         $money += 200
         $debt += 200
     elif money > debt and debt > 0:
-        scene bg mansion_outside
+        scene bg outside
         with None
-        show neighbour
+        show neighbour at right
         with fade
-        n "unicode here: Hello! do you have my money"
+        n "Hello! {noalt}\u0496\u0547{/noalt}{alt}uteb est soyed{/alt} money"
+        mc "{i}Oh, my neighbour is asking about the loan!{/i}"
         menu:
             "Pay them back":
                 $ money -= debt
@@ -435,7 +449,7 @@ label neighbour_loan:
                 else: 
                     jump home
             "Pay them back but be mean about it":
-                mc "fine >:("
+                mc "fine >:( {i}Seems like I have $[money] left.{/i}"
                 $ money -= debt
                 if day == 0:
                     jump groceryStore
@@ -541,7 +555,7 @@ label groceryStorePost:
         $ cost += 100 * (2 - len(collecteditems))
         
     #have the cost be the only thing not blurred i think. or rely on your blackjack knowledge?
-    c "add unicode later: That will be $[cost]."
+    c "\u2021\u20A6 be $[cost]."
     $money -= cost
     mc "Thank you! {i}Looks like I have $[money] left.{/i}"
 
@@ -557,22 +571,27 @@ label groceryStorePost:
         jump new_day
 
     label new_day_neighbour:
-        mc "{i} It's my neighbour from before. {/i}"
-        n "add unicode later (less than before?): Hello! It's good to see you again! Are you going to the grocery store?"
-        mc "Hello! DUDE IDK HOW TO DO THIS someone  has to write diaLOG"
+        if day == 1:
+            scene bg outside
+            show neighbour at right
+            with fade
+            mc "{i} It's my neighbour from before. {/i}"
+            n "Hello! \u0409not\u0496\u0547! Are \u0D17 grocery \u0B07\u21A7?"
+            mc "Hello! I'm going to the grocery store."
+            n "\u23CF not here \u0C20? \u20AB\u1FE9 learning language \u119A."
         jump groceryStore
 
     label new_day:
-        scene bg home
-        with fade
         $ day += 1
         $ time = 0
+        scene bg home
+        with fade
         if day == 1:
-            mc "It's my 2nd day here!"
+            mc "{i}It's my 2nd day here!{/i}"
         elif day == 2:
-            mc "It's my 3rd day here!"
+            mc "{i}It's my 3rd day here!{/i}"
         else:
-            mc "It's my [day]th day here!"
+            mc "{i}It's my [day]th day here!{/i}"
         jump home
 
     label home:
@@ -587,11 +606,11 @@ label groceryStorePost:
                 "Attempt the language exam":
                     jump exam
                 "Go GAMBLING":
-                    mc "Let's go GAMBLING!"
+                    mc "{i}Let's go GAMBLING!{/i}"
                     $time += 1
                     jump casino
                 "Go to the grocery store":
-                    mc "I need some more groceries..."
+                    mc "{i}I need some more groceries...{/i}"
                     $time += 1
                     jump new_day_neighbour
                 "Study the language":
@@ -599,15 +618,20 @@ label groceryStorePost:
                     jump practice
 
     label exam:
-        mc "The language exam costs 500$ to atttempt, but once I pass it, i'll be able to find a job..."
-        mc "Am I really ready?"
+        mc "{i}The language exam costs 500$ to atttempt, but once I pass it, i'll be able to find a job..{/i}."
+        if money < 500:
+            mc "{i} I don't have enough money to write the test right now...{/i}"
+            jump home
+        mc "{i}Am I really ready?{/i}"
         menu:
             "Yes!":
+                scene bg exam
                 $time += 1
                 $correct = 0
                 #add all the dictionaries needed here
                 $unicodenumbers = {"\u0586": 1, "\u0681": 2, "\u0E1F": 3, "\u10E6": 4, "\u0ED7": 5, "\u315D": 6, "\u210C": 7, "\u2204": 8, "\uFFA2": 9, "\uFEFC": 10, "\u2735": 11, "\u3147": 12, "\u1197": 13}
                 $total_dict = keywords | unicodenumbers
+                $money -= 500
                 jump question_t
             "I think I need more time...":
                 jump home
@@ -745,15 +769,18 @@ label groceryStorePost:
     label post_test:
         mc "{i}I got [correct]/5 this time."
         if correct == 5:
-            mc "I've passed the test! I am finding my place in this new city."
+            mc "{i}I've passed the test! I am finding my place in this new city.{/i}"
             return
         else:
-            mc "I've got some more practice to do... and some more money to make"
+            mc "{i}I've got some more practice to do... and some more money to make.{/i}"
         jump home
 
     label practice: 
+        if money < 100:
+            mc "{i}It looks like I don't have enough money to hire a tutor...{/i}"
+            jump home
         mc "{i}It's a good thing I hired a tutor to practice my skills!{/i}"
-        mc "{i}Time to Lock In{/i}"
+        mc "{i}Time to Lock In.{/i}"
         "It will cost ($100)"
         menu:
             "Yes?":
@@ -763,11 +790,11 @@ label groceryStorePost:
                 jump home
     label startPractice:
         $valuex = renpy.random.randint(1,13)
-        "what is this stand for? [flippedunicodenumbers[valuex]]"
+        "What does this mean? [flippedunicodenumbers[valuex]]"
         $ guess = int(renpy.input (_("Input your guess."), allow="0123456789."))
         if(guess == valuex):
-            "Thats Correct!"
+            "That's Correct!"
             jump home
         else: 
-            "That Incorrect"
+            "That's Incorrect."
             jump home
