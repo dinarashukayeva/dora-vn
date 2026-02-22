@@ -70,6 +70,7 @@ image bg casino = DynamicDisplayable(apply_brightness, picture_name="casino.png"
 image bg grocery = DynamicDisplayable(apply_brightness, picture_name="grocery.png")
 image bg exam = DynamicDisplayable(apply_brightness, picture_name="exam.png")
 image bg outside = DynamicDisplayable(apply_brightness, picture_name="house.png")
+image bg home = DynamicDisplayable(apply_brightness, picture_name="home.png")
 
 # The game starts here.
 
@@ -512,6 +513,7 @@ label groceryStoreMinigameAisles:
     mc "{i}Looks like there's 4 aisles to choose from, but I only have time to check [aislesleft] more aisles before the store closes.{/i}"
     $ founditems = []
     menu:
+        "{i}I'm looking for [wanteditems].{/i}"
         "[aisle1]":
             python:
                 for i in allwords[:4]:
