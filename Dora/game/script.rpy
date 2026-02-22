@@ -211,7 +211,7 @@ label blackjack:
     mc "Deal me in."
     $ bet = 0
     label betinput:
-        $ bet = int(renpy.input (_("Input your bet. You have $[money] left."), allow="0123456789."))
+        $ bet = int(renpy.input (_("Input your bet. You have $[money] left."), allow="0123456789"))
         if bet > money:
             mc "{i}I don't have enough money for that bet...{/i}"
             jump betinput
@@ -233,6 +233,7 @@ label blackjack:
         $ playerdraw = 10
     elif playerdraw == 1:
         $ playeraces += 1
+        $ playerdraw = 11
     $ playerscore += playerdraw
     $ playerdraw = renpy.random.randint(1,13) # Second player draw
     $ playercards += flippedunicodenumbers[playerdraw]
@@ -240,6 +241,7 @@ label blackjack:
         $ playerdraw = 10
     elif playerdraw == 1:
         $ playeraces += 1
+        $ playerdraw = 11
     $ playerscore += playerdraw
 
     $ dealerdraw = renpy.random.randint(1,13)
@@ -248,8 +250,11 @@ label blackjack:
         $ dealerdraw = 10
     elif dealerdraw == 1:
         $ dealeraces += 1
+        $ dealerdraw = 11
     $ dealerscore += dealerdraw
     # [insert facedown dealer card sprite]
+
+    jump checkPlayer
     label playerChoice:
         # Have buttons appear
         menu:
@@ -261,6 +266,7 @@ label blackjack:
                     $ playerdraw = 10
                 elif playerdraw == 1:
                     $ playeraces += 1
+                    $ playerdraw = 11
                 $ playerscore += playerdraw
                 jump checkPlayer
             "Stand":
@@ -278,6 +284,7 @@ label blackjack:
                     $ playerdraw = 10
                 elif playerdraw == 1:
                     $ playeraces += 1
+                    $ playerdraw = 11
                 $ playerscore += playerdraw
                 if playerscore > 21:
                     if playeraces > 0:
@@ -312,6 +319,7 @@ label blackjack:
                 $ dealerdraw = 10
             elif dealerdraw == 1:
                 $ dealeraces += 1
+                $ dealerdraw = 11
             $ dealerscore += dealerdraw
         jump checkDealer
     label checkDealer:
@@ -333,14 +341,14 @@ label blackjack:
                 jump lose
     label win:
         if playerscore == 21:
-            dealer "{noalt}\u23CF\u0C20{/noalt}{alt}te vigral{/noalt}, blackjack! {noalt}\u0B9E\u235F{/noalt}{alt}uhaditeper{/alt}" # someone put some unicode here
+            dealer "{noalt}\u23CF\u0C20{/noalt}{alt}te vigral{/noalt}, blackjack! {noalt}\u0B9E\u235F{/noalt}{alt}uhaditeper{/alt}"
             $ money += bet * 3
         else:
-            dealer "{noalt}\u0B9E\u235F, \u0D17{/noalt}{alt}te molo vigral{/alt}win!" # someone put some unicode here
+            dealer "{noalt}\u0B9E\u235F, \u0D17{/noalt}{alt}te molo vigral{/alt}win!"
             $ money += bet * 2
         jump postgamemenu
     label lose:
-        dealer "{noalt}\u0933, \u0554\u0462\u0D17{/noalt}{alt}nokonet praigre isviha{/alt} lose." # someone put some unicode here
+        dealer "{noalt}\u0933, \u0554\u0462\u0D17{/noalt}{alt}nokonet praigre isviha{/alt} lose."
         jump postgamemenu
 
     label postgamemenu:
@@ -421,6 +429,7 @@ label Roulette:
         jump neighbour_loan
 
 label neighbour_loan:
+    $ money = round(money, 2)
     if money < 200:
         scene bg outside
         with None
